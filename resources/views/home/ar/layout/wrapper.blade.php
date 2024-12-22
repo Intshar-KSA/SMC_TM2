@@ -268,8 +268,9 @@
                 </div>
             </div><!-- .top-footer -->
             <div class="footer__bottom">
-                <p class="footer__bottom__copyright">{{Carbon::now()->year}} &copy; <a title="Intshar"
-                                                                                       href="https://intshar.net">Intshar.com</a>.
+                <p class="footer__bottom__copyright">{{Carbon::now()->year}} &copy; <a
+                        title="قمة الإنتشار للتسويق الإلكتروني"
+                        href="https://intshar.net">قمة الإنتشار للتسويق الإلكتروني</a>.
                     كل الحقوق محفوظة.</p>
             </div><!-- .top-footer -->
         </div><!-- .container -->
