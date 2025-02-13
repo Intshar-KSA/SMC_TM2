@@ -61,6 +61,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ]) ->plugins([
+                \Statikbe\FilamentTranslationManager\FilamentChainedTranslationManagerPlugin::make(),
             ]);
     }
 }

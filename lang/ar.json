@@ -1,0 +1,19 @@
+{
+    "Thank you!": "شكرا لك!",
+    "We've received your message.": "لقد تلقينا رسالتك شكرا لتواصلك معنا.",
+    "Whatsapp ContactUs Content :name :phone.": "لديك تسجيل جديد عبر الموقع الإلكتروني:\n\nالعميل *:name*\n\n\nبالرقم *:phone*",
+    "request_form_title": "طلب تسجيل موظف جديد",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "submit": "إرسال الطلب",
+    "success_message": "تم تقديم طلبك بنجاح. سيتم مراجعته قريبًا.",
+    "form_description": "املأ الحقول أدناه لإرسال طلبك.",
+    "name_placeholder": "أدخل اسمك الكامل",
+    "email_placeholder": "أدخل بريدك الإلكتروني",
+    "phone_placeholder": "أدخل رقم هاتفك",
+    "task": "مهمه",
+    "project": "مشروع",
+    "settings": "الاعدادات قق",
+    "projects": "المشاريع"
+}

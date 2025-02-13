@@ -1,6 +1,19 @@
 {
-    "Thank you!": "شكرا لك!",
-    "We've received your message.": "لقد تلقينا رسالتك شكرا لتواصلك معنا.",
-    "Whatsapp ContactUs Content :name :phone.": "لديك تسجيل جديد عبر الموقع الإلكتروني:\n\nالعميل *:name*\n\n\nبالرقم *:phone*"
-
+    "Thank you!": "Thank you!",
+    "We've received your message.": "We've received your message. Thank you for contacting us.",
+    "Whatsapp ContactUs Content :name :phone.": "You have a new registration via the website:\n\nCustomer *:name*\n\n\nWith phone number *:phone*",
+    "request_form_title": "New Employee Registration Request",
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "submit": "Submit Request",
+    "success_message": "Your request has been submitted successfully. It will be reviewed soon.",
+    "form_description": "Fill in the fields below to submit your request.",
+    "name_placeholder": "Enter your full namexx",
+    "email_placeholder": "Enter your email address",
+    "phone_placeholder": "Enter your phone number",
+    "task": "task",
+    "project": "project",
+    "settings": "settings",
+    "projects": "projects"
 }

@@ -37,6 +37,7 @@ class EmpResource extends Resource
                 //     ->required()
                 //     ->numeric(),
                 Forms\Components\TextInput::make('name')
+                ->label(__('name'))
                     ->required()
                     ->maxLength(255),
                     Forms\Components\TextInput::make('email')
@@ -103,7 +104,7 @@ class EmpResource extends Resource
     ->required()
     ->hiddenOn('create'),
 
-            
+
   Forms\Components\Toggle::make('is_admin')
   ->required(),
   Forms\Components\Toggle::make('can_show')
@@ -160,7 +161,7 @@ class EmpResource extends Resource
                     Tables\Columns\TextColumn::make('day_off')
                     ->label('Days Off')
                     ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state),
-                
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -237,7 +238,7 @@ $message = str_replace("\n", "\\n", $message);
                     //     ->send();
                 })
                 ->visible(fn (Emp $record) => $record->request_status === 'pending'),
-        
+
             Tables\Actions\Action::make('reject')
                 ->label('Reject')
                 ->icon('heroicon-o-x-circle')

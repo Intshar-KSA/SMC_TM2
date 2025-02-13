@@ -6,6 +6,13 @@
       'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
     ),
   ),
+  'bezhansalleh/filament-language-switch' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'BezhanSalleh\\FilamentLanguageSwitch\\FilamentLanguageSwitchServiceProvider',
+    ),
+  ),
   'blade-ui-kit/blade-heroicons' => 
   array (
     'providers' => 
@@ -156,6 +163,24 @@
     'providers' => 
     array (
       0 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    ),
+  ),
+  'statikbe/laravel-chained-translator' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Statikbe\\LaravelChainedTranslator\\TranslationServiceProvider',
+    ),
+  ),
+  'statikbe/laravel-filament-chained-translation-manager' => 
+  array (
+    'aliases' => 
+    array (
+      'FilamentTranslationManager' => 'Statikbe\\FilamentTranslationManager\\FilamentTranslationManager',
+    ),
+    'providers' => 
+    array (
+      0 => 'Statikbe\\FilamentTranslationManager\\FilamentTranslationManagerServiceProvider',
     ),
   ),
 );
