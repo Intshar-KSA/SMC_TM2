@@ -48,5 +48,19 @@
     "Whatsapp group id": "معرف مجموعة الواتس اب",
     "Insta user": "مستخدم إنستجرام",
     "Start date": "تاريخ البدء",
-    "End date": "تاريخ الانتهاء"
+    "End date": "تاريخ الانتهاء",
+    "Is recurring": "متكرر",
+    "Send to group": "أرسل إلى المجموعة",
+    "Time in minutes": "الوقت في دقائق",
+    "Title": "عنوان",
+    "Description": "وصف",
+    "Recurrence interval days": "أيام التكرار",
+    "Next occurrence": "الحدوث التالي",
+    "Sender": "مرسل",
+    "Receiver": "المتلقي",
+    "Task status": "حالة المهمة",
+    "Project owner": "مالك المشروع",
+    "Created from": "تم إنشاؤها من",
+    "Reciver id": "معرف المتلقي",
+    "Created until": "تم إنشاؤها حتى"
 }

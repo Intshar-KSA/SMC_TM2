@@ -48,5 +48,19 @@
     "Whatsapp group id": "Whatsapp group id",
     "Insta user": "Insta user",
     "Start date": "Start date",
-    "End date": "End date"
+    "End date": "End date",
+    "Is recurring": "Is Recurring",
+    "Send to group": "Send to group",
+    "Time in minutes": "Time in minutes",
+    "Title": "Title",
+    "Description": "Description",
+    "Recurrence interval days": "Recurrence interval days",
+    "Next occurrence": "Next occurrence",
+    "Sender": "Sender",
+    "Receiver": "Receiver",
+    "Task status": "Task status",
+    "Project owner": "Project owner",
+    "Created from": "Created from",
+    "Reciver id": "Reciver id",
+    "Created until": "Created until"
 }
