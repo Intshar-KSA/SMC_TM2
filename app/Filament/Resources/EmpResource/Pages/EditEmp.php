@@ -20,12 +20,4 @@ class EditEmp extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['user_id'] = auth()->id();
-
-
-
-        return $data;
-    }
 }

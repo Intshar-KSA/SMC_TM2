@@ -25,24 +25,6 @@ class ReceivedTasksRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return TaskResource::table($table)
-            ->recordTitleAttribute('title')
-            ->columns([
-                Tables\Columns\TextColumn::make('title'),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordTitleAttribute('title');
     }
 }

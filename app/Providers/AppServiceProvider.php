@@ -16,6 +16,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\Column;
 
 class AppServiceProvider extends ServiceProvider
@@ -96,6 +97,11 @@ class AppServiceProvider extends ServiceProvider
         // Configure Table Columns globally
         Column::configureUsing(function (Column $column): void {
             $column->translateLabel();
+        });
+
+        // Configure Section globally
+        Section::configureUsing(function (Section $section): void {
+            $section->translateLabel(); // Translate the section label
         });
 
         // Configure LanguageSwitch

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskStatusResource\Pages;
-use App\Filament\Resources\TaskStatusResource\RelationManagers;
 use App\Models\TaskStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,32 +17,20 @@ class TaskStatusResource extends Resource
 {
     protected static ?string $model = TaskStatus::class;
 
-    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    // protected static ?string $navigationIcon = 'heroicon-o-check-badge';
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';
     protected static ?string $navigationGroup = 'General Settings';
-    // protected static ?string $navigationLabel = 'Task Statuses';
-
-
-
-
-
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('user_id')
-                //     ->required()
-                //     ->numeric(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Toggle::make('only_for_admin')
                     ->required(),
-                    Forms\Components\Toggle::make('is_completely')->label('is completed'),
-                    Forms\Components\Toggle::make('is_cancelled'),
-
+                Forms\Components\Toggle::make('is_completely'),
+                Forms\Components\Toggle::make('is_cancelled'),
             ]);
     }
 
@@ -51,15 +38,11 @@ class TaskStatusResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('user_id')
-                //     ->numeric()
-                //     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('only_for_admin')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_completely')
-                ->label('is completed')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_cancelled')
                     ->boolean(),
@@ -73,7 +56,7 @@ class TaskStatusResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Filters can be added here
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -88,7 +71,7 @@ class TaskStatusResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Relations can be added here
         ];
     }
 
@@ -103,20 +86,28 @@ class TaskStatusResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if(auth()->user()->type=="super admin"){
+        if (auth()->user()->type == "super admin") {
             return parent::getEloquentQuery();
         }
         return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
     }
 
-     /**
+    /**
      * Get the translated model label.
      */
     public static function getModelLabel(): string
     {
         $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        return __("{$modelName}");
+        $modelName = class_basename($modelClass); // e.g., "TaskStatus"
+
+        // Convert to headline case (e.g., "Task Status")
+        $headline = Str::headline($modelName);
+
+        // Convert to lowercase and capitalize the first character of the first word
+        $formatted = Str::lower($headline); // e.g., "task status"
+        $formatted = Str::ucfirst($formatted); // e.g., "Task status"
+
+        return __($formatted); // Translate the model label
     }
 
     /**
@@ -125,17 +116,17 @@ class TaskStatusResource extends Resource
     public static function getPluralModelLabel(): string
     {
         $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
+        $modelName = class_basename($modelClass); // e.g., "TaskStatus"
 
-        // Convert to headline case (e.g., "Task Follow Ups")
+        // Convert to headline case (e.g., "Task Status")
         $headline = Str::headline($modelName);
 
         // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task follow ups"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
+        $formatted = Str::lower($headline); // e.g., "task status"
+        $formatted = Str::ucfirst($formatted); // e.g., "Task status"
 
         // Pluralize the formatted string
-        $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
+        $plural = Str::plural($formatted); // e.g., "Task status" -> "Task statuses"
 
         return __($plural); // Translate the plural label
     }

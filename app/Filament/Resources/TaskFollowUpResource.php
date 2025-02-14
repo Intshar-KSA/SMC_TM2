@@ -129,8 +129,15 @@ class TaskFollowUpResource extends Resource
     public static function getModelLabel(): string
     {
         $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        return __("{$modelName}");
+        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
+
+        // Convert to headline case (e.g., "Task Follow Ups")
+        $headline = Str::headline($modelName);
+
+        // Convert to lowercase and capitalize the first character of the first word
+        $formatted = Str::lower($headline); // e.g., "task follow ups"
+        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
+        return __($formatted);
     }
 
     /**

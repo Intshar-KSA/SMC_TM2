@@ -38,8 +38,8 @@ class EmpResource extends Resource
     {
         return $form
             ->schema([
-                RegisterAccountForm::getRegisterAccountFormComponent('Add employee','Primary information'),
-                Section::make(__('other information'))
+                RegisterAccountForm::getRegisterAccountFormComponent('Primary information'),
+                Section::make(__('Other information'))
         ->schema([
             Forms\Components\TextInput::make('sheet_api_url'),
             Forms\Components\TextInput::make('post_url'),

@@ -62,5 +62,14 @@
     "Project owner": "مالك المشروع",
     "Created from": "تم إنشاؤها من",
     "Reciver id": "معرف المتلقي",
-    "Created until": "تم إنشاؤها حتى"
+    "Created until": "تم إنشاؤها حتى",
+    "Task statuses": "حالات المهمة",
+    "Taskstatus": "TaskStatus",
+    " is completed": "تم الانتهاء",
+    "Only for admin*": "فقط للمسؤول*",
+    " is cancelled": "تم إلغاؤه",
+    "Only for admin": "فقط للمسؤول*",
+    "Is completed": "تم الانتهاء",
+    "Is cancelled": "تم إلغاؤه",
+    "Is completely": "تماما"
 }

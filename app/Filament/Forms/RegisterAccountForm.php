@@ -59,10 +59,9 @@ class RegisterAccountForm
             ->maxLength(255)
             ->autofocus();
     }
-    public static function getRegisterAccountFormComponent(string $title, string $description): Section
+    public static function getRegisterAccountFormComponent(string $title): Section
     {
         return Section::make(__($title))
-        ->description(__($description))
         ->schema([
         Self::getNameFormComponent(),
         Self::getPhoneFormComponent(),

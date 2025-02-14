@@ -17,7 +17,7 @@
     "Id": "Id",
     "Add employee": "Add Employee",
     "Primary information": "Primary Information",
-    "Other information": "Other Information",
+    "Other information": "other information",
     "Sheet api url": "Google Sheet URL",
     "Post url": "Post URL",
     "Day off": "Days Off",
@@ -58,9 +58,15 @@
     "Next occurrence": "Next occurrence",
     "Sender": "Sender",
     "Receiver": "Receiver",
-    "Task status": "Task status",
+    "Task status": "Task Status",
     "Project owner": "Project owner",
     "Created from": "Created from",
     "Reciver id": "Reciver id",
-    "Created until": "Created until"
+    "Created until": "Created until",
+    "Task statuses": "Task Statuses",
+    "Taskstatus": "TaskStatus",
+    "Only for admin": "Only for admin*",
+    "Is completed": " is completed",
+    "Is cancelled": " Is cancelled",
+    "Is completely": "Is completely"
 }
