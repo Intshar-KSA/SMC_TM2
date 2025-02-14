@@ -15,9 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
             $table->string('phone')->nullable();
             $table->integer('number_of_hours_per_day')->default(8);
-            $table->enum('day_off', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])->default('Friday');
+            $table->json('day_off')->nullable()->default(json_encode(['Friday']));
+            $table->text('sheet_api_url')->nullable();
+            $table->boolean('is_admin')->default(false);
+            $table->string('post_url')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
 

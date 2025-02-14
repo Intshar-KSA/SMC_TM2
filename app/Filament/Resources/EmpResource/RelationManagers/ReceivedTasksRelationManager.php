@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EmpResource\RelationManagers;
 
+use App\Filament\Resources\TaskResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -16,17 +17,14 @@ class ReceivedTasksRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return TaskResource::form($form);
     }
+
+
 
     public function table(Table $table): Table
     {
-        return $table
+        return TaskResource::table($table)
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\TextColumn::make('title'),

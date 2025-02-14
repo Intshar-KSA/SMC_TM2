@@ -22,6 +22,10 @@ return new class extends Migration
             $table->text('w_api_profile_id')->nullable();
             $table->date('end_date_subscription')->nullable();
             $table->enum('type', ['super admin', 'admin'])->default('admin');
+            $table->boolean('enable_whatsapp_notifications')->default(false);
+            $table->boolean('enable_group_notifications')->default(false);
+            $table->boolean('enable_employee_notifications')->default(false);
+            $table->string('work_group')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

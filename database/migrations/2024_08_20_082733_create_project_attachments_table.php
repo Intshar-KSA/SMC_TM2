@@ -13,7 +13,8 @@ class CreateProjectAttachmentsTable extends Migration
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->string('des')->nullable();
             $table->string('url');
-            $table->boolean('in_own_drive')->default(false);
+            $table->boolean('is_in_own_drive')->default(false);
+            $table->foreignId('emp_id')->nullable()->constrained('emps')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -19,7 +19,11 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('emps')->onDelete('cascade');
             $table->foreignId('receiver_id')->constrained('emps')->onDelete('cascade');
             $table->integer('time_in_minutes')->nullable();
+            $table->boolean('is_recurring')->default(false);
+            $table->integer('recurrence_interval_days')->nullable();
+            $table->datetime('next_occurrence')->nullable();
             $table->dateTime('start_date')->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('tasks')->onDelete('cascade');
             $table->timestamps();
         });
 

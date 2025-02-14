@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\EmpResource\RelationManagers\ReceivedTasksRelationManager;
 use Filament\Forms;
 use App\Models\Task;
 use Filament\Tables;
@@ -37,7 +38,7 @@ class TaskResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(), // Label will be auto-generated as "Description"
                 Forms\Components\Select::make('receiver_id')
-                    ->relationship('task_emp', 'name'), // Label will be auto-generated as "Receiver ID"
+                    ->relationship('task_emp', 'name')->hiddenOn(ReceivedTasksRelationManager::class) , // Label will be auto-generated as "Receiver ID"
                 Forms\Components\TextInput::make('time_in_minutes')
                     ->numeric()
                     ->default(null), // Label will be auto-generated as "Time In Minutes"
@@ -175,8 +176,18 @@ class TaskResource extends Resource
     public static function getPluralModelLabel(): string
     {
         $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        $plural = Str::plural(Str::headline($modelName));
-        return __("{$plural}");
+        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
+
+        // Convert to headline case (e.g., "Task Follow Ups")
+        $headline = Str::headline($modelName);
+
+        // Convert to lowercase and capitalize the first character of the first word
+        $formatted = Str::lower($headline); // e.g., "task follow ups"
+        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
+
+        // Pluralize the formatted string
+        $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
+
+        return __($plural); // Translate the plural label
     }
 }
