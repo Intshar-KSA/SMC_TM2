@@ -76,4 +76,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isSuperAdmin()
+    {
+        return $this->type === 'super_admin';
+    }
+
+    public function isAdmin()
+    {
+        return $this->type === 'admin';
+    }
 }

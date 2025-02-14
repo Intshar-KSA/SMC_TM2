@@ -41,6 +41,10 @@ class EmpResource extends Resource
                 RegisterAccountForm::getRegisterAccountFormComponent('Primary information'),
                 Section::make(__('Other information'))
         ->schema([
+            Forms\Components\Select::make('user_id')
+            ->relationship('user', 'name', function (Builder $query) {
+                return $query->where('type', 'admin');
+            })->hidden(auth()->user()->type == 'admin'),
             Forms\Components\TextInput::make('sheet_api_url'),
             Forms\Components\TextInput::make('post_url'),
 
