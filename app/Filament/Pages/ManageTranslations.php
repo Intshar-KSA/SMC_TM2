@@ -10,6 +10,9 @@ use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class ManageTranslations extends Page implements HasForms
 {
@@ -34,21 +37,18 @@ class ManageTranslations extends Page implements HasForms
         return [
             Select::make('locale')
                 ->label('Language')
-                ->options([
-                    'en' => 'English',
-                    'ar' => 'Arabic',
-                ])
+                ->options(config('app.supported_locales'))
                 ->reactive()
                 ->afterStateUpdated(fn ($state) => $this->changeLocale($state)),
 
             KeyValue::make('translations')
                 ->label('Translations')
-                ->keyLabel('Key') // Customize the key column label
-                ->valueLabel('Value') // Customize the value column label
-                ->addable(true) // Allow adding new key-value pairs
-                ->editableKeys(true) // Allow editing keys
-                ->editableValues(true) // Allow editing values
-                ->deletable(true), // Allow deleting key-value pairs
+                ->keyLabel('Key')
+                ->valueLabel('Value')
+                ->addable(true)
+                ->editableKeys(true)
+                ->editableValues(true)
+                ->deletable(true),
         ];
     }
 
@@ -64,37 +64,91 @@ class ManageTranslations extends Page implements HasForms
         $this->loadTranslations();
     }
 
+    protected function formatKey(string $key): string
+    {
+        return ucfirst(strtolower(str_replace('_', ' ', $key)));
+    }
+
     public function saveTranslations(): void
     {
-        // Save translations for the current locale
-        $currentLocalePath = lang_path("{$this->locale}.json");
-        File::put($currentLocalePath, json_encode($this->translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        // Validate translations before saving
+        $validator = Validator::make($this->translations, [
+            '*' => 'required|string', // Ensure all values are strings
+        ]);
 
-        // Add new keys to all other locales
-        $locales = ['en', 'ar']; // Add all supported locales here
+        if ($validator->fails()) {
+            Notification::make()
+                ->title('Validation Error')
+                ->body('Please ensure all translation values are valid strings.')
+                ->danger()
+                ->send();
+            return;
+        }
+
+        // Format keys before saving
+        $formattedTranslations = [];
+        foreach ($this->translations as $key => $value) {
+            $formattedKey = $this->formatKey($key);
+            $formattedTranslations[$formattedKey] = $value;
+        }
+
+        // Save formatted translations for the current locale
+        $currentLocalePath = lang_path("{$this->locale}.json");
+        if (!File::put($currentLocalePath, json_encode($formattedTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
+            Notification::make()
+                ->title('Error')
+                ->body('Failed to save translations for the current locale.')
+                ->danger()
+                ->send();
+            return;
+        }
+
+        // Ensure new keys exist in other locales and translate their values
+        $locales = array_keys(config('app.supported_locales'));
         foreach ($locales as $locale) {
             if ($locale === $this->locale) {
-                continue; // Skip the current locale
+                continue;
             }
 
             $path = lang_path("{$locale}.json");
             $existingTranslations = File::exists($path) ? json_decode(File::get($path), true) : [];
 
-            // Add new keys from the current locale to other locales
-            foreach ($this->translations as $key => $value) {
+            foreach ($formattedTranslations as $key => $value) {
                 if (!array_key_exists($key, $existingTranslations)) {
-                    $existingTranslations[$key] = ''; // Add the new key with an empty value
+                    // Translate the value into the target locale
+                    $translatedValue = $this->translateValue($value, $this->locale, $locale);
+                    $existingTranslations[$key] = $translatedValue;
                 }
             }
 
-            // Save the updated translations for the locale
-            File::put($path, json_encode($existingTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            if (!File::put($path, json_encode($existingTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
+                Notification::make()
+                    ->title('Error')
+                    ->body("Failed to save translations for locale: {$locale}.")
+                    ->danger()
+                    ->send();
+                return;
+            }
         }
 
         Notification::make()
             ->title('Translations saved successfully!')
             ->success()
             ->send();
+    }
+
+    protected function translateValue(string $value, string $sourceLocale, string $targetLocale): string
+    {
+        try {
+            $translator = new GoogleTranslate();
+            $translator->setSource($sourceLocale);
+            $translator->setTarget($targetLocale);
+            return $translator->translate($value);
+        } catch (\Exception $e) {
+            // Log the error and return the original value if translation fails
+            Log::error("Translation failed: {$e->getMessage()}");
+            return $value;
+        }
     }
 
     protected function getActions(): array

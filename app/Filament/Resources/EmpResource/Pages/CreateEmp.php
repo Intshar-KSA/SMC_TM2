@@ -18,7 +18,7 @@ class CreateEmp extends CreateRecord
     {
         $data['user_id'] = auth()->id();
 
-        // $data['day_off'] = implode(',', $data['day_off']);
+
 
         return $data;
     }

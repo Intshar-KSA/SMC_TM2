@@ -16,56 +16,34 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TaskResource\RelationManagers;
+use Illuminate\Support\Str;
 
 class TaskResource extends Resource
 {
     protected static ?string $model = Task::class;
 
-    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';
     protected static ?int $navigationSort = 2;
-
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('project_id')
-                //     ->required()
-                //     ->numeric(),
                 Forms\Components\Select::make('project_id')
-                    ->relationship('user_project', 'name')
-                    ->label('Project Name'),
+                    ->relationship('user_project', 'name'), // Label will be auto-generated as "Project ID"
                 Forms\Components\TextInput::make('title')
-
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255), // Label will be auto-generated as "Title"
                 Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                // Forms\Components\TextInput::make('sender_id')
-                //     ->required()
-                //     ->numeric(),
-                // Forms\Components\Select::make('sender_id')
-                //     ->relationship('task_emp', 'name'),
-                // // Forms\Components\TextInput::make('receiver_id')
-                // //     ->required()
-                // //     ->numeric(),
+                    ->columnSpanFull(), // Label will be auto-generated as "Description"
                 Forms\Components\Select::make('receiver_id')
-                    ->relationship('task_emp', 'name')
-                    ->label('Receiver Name'),
+                    ->relationship('task_emp', 'name'), // Label will be auto-generated as "Receiver ID"
                 Forms\Components\TextInput::make('time_in_minutes')
                     ->numeric()
-                    ->default(null),
-                // Forms\Components\DateTimePicker::make('start_date'),
+                    ->default(null), // Label will be auto-generated as "Time In Minutes"
                 Forms\Components\Toggle::make('is_recurring')
-                    ->required(),
-                    Forms\Components\Toggle::make('send_to_group')
-                    ->label('send to client group'),
-                // Forms\Components\TextInput::make('recurrence_interval_days')
-                //     ->numeric()
-                //     ->default(null),
-
-                // Forms\Components\DateTimePicker::make('next_occurrence'),
+                    ->required(), // Label will be auto-generated as "Is Recurring"
+                Forms\Components\Toggle::make('send_to_group'), // Label will be auto-generated as "Send To Group"
             ]);
     }
 
@@ -75,55 +53,45 @@ class TaskResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "ID"
                 Tables\Columns\TextColumn::make('projectOwner.name')
-                    ->label('User Name')
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Project Owner Name"
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable(), // Label will be auto-generated as "Title"
                 Tables\Columns\TextColumn::make('sender.name')
-                    ->label('Sender Name') // Optional label
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Sender Name"
                 Tables\Columns\TextColumn::make('receiver.name')
-                    ->label('Receiver Name') // Optional label
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('lastFollowUp.taskStatus.name')
-                    ->label('Last Follow Up') // Optional label
-                    ->sortable(),
-                // Tables\Columns\TextColumn::make('sender_id')
-                // ->relationship('task_emp', 'name')
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('receiver_id')
-                //     ->numeric()
-                //     ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Receiver Name"
+                Tables\Columns\TextColumn::make('lastFollowUp.taskStatus.name')
+                    ->sortable(), // Label will be auto-generated as "Last Follow Up Task Status Name"
                 Tables\Columns\TextColumn::make('time_in_minutes')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Time In Minutes"
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Start Date"
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true), // Label will be auto-generated as "Created At"
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true), // Label will be auto-generated as "Updated At"
                 Tables\Columns\IconColumn::make('is_recurring')
-                    ->boolean(),
+                    ->boolean(), // Label will be auto-generated as "Is Recurring"
                 Tables\Columns\TextColumn::make('recurrence_interval_days')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Recurrence Interval Days"
                 Tables\Columns\TextColumn::make('next_occurrence')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable(), // Label will be auto-generated as "Next Occurrence"
             ])
             ->filters([
                 Filter::make('created_at')
                     ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until'),
+                        DatePicker::make('created_from'), // Label will be auto-generated as "Created From"
+                        DatePicker::make('created_until'), // Label will be auto-generated as "Created Until"
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -136,20 +104,18 @@ class TaskResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
-
-             Filter::make('reciver_id')
-             ->form([
-                 Select::make('reciver_id')
-             ])
-             ->query(function (Builder $query, array $data): Builder {
-                 return $query
-                     ->when(
-                         $data['reciver_id'],
-                         fn (Builder $query, $date): Builder => $query->where('receiver_id', $date),
-                     );
-             }),
-
-            ],layout: FiltersLayout::AboveContent)
+                Filter::make('reciver_id')
+                    ->form([
+                        Select::make('reciver_id') // Label will be auto-generated as "Reciver ID"
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['reciver_id'],
+                                fn (Builder $query, $date): Builder => $query->where('receiver_id', $date),
+                            );
+                    }),
+            ], layout: FiltersLayout::AboveContent)
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ])
@@ -170,7 +136,6 @@ class TaskResource extends Resource
         ];
     }
 
-
     public static function getPages(): array
     {
         return [
@@ -186,27 +151,32 @@ class TaskResource extends Resource
             return parent::getEloquentQuery();
         }
 
+        $userId = auth()->guard('emp')->check() ? auth()->guard('emp')->user_id : auth()->user()->id;
 
-        // return parent::getEloquentQuery();
-        // // ->join('projects', 'tasks.project_id', '=', 'projects.id')
-        // // ->where('projects.user_id', auth()->user()->id)
-        // // ->select('tasks.*');
-        $userId;
-        if (auth()->guard('emp')->check()) {
-            $userId = auth()->guard('emp')->user_id;
-          
-
-        } else {
-            $userId = auth()->user()->id;
-            // Handle the case where the user is not authenticated
-        }
-        // $userId= auth()->user()->id;
-
-        // Assuming the Task model has a relationship with the Project model
-        // and the Project model has a 'user_id' field to relate it to the user
         return parent::getEloquentQuery()
             ->whereHas('user_project', function (Builder $query) use ($userId) {
                 $query->where('user_id', $userId);
             });
+    }
+
+    /**
+     * Get the translated model label.
+     */
+    public static function getModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        return __("{$modelName}");
+    }
+
+    /**
+     * Get the translated plural model label.
+     */
+    public static function getPluralModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        $plural = Str::plural(Str::headline($modelName));
+        return __("{$plural}");
     }
 }

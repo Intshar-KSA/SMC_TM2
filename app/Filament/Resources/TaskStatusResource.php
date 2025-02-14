@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class TaskStatusResource extends Resource
 {
@@ -106,5 +107,26 @@ class TaskStatusResource extends Resource
             return parent::getEloquentQuery();
         }
         return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+    }
+
+     /**
+     * Get the translated model label.
+     */
+    public static function getModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        return __("{$modelName}");
+    }
+
+    /**
+     * Get the translated plural model label.
+     */
+    public static function getPluralModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        $plural= Str::plural(Str::headline($modelName));
+        return  __("{$plural}");
     }
 }

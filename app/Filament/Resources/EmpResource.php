@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\DayOffEnum;
+use App\Enums\RequestStatusEnum;
 use App\Models\Emp;
 use Filament\Forms;
 use App\Models\User;
@@ -9,6 +11,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Exports\EmpsExport;
+use App\Filament\Forms\RegisterAccountForm;
 use Filament\Resources\Resource;
 use App\Services\WhatsAppService;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,12 +22,14 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\EmpResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmpResource\RelationManagers;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Illuminate\Support\Str;
 
 class EmpResource extends Resource
 {
     protected static ?string $model = Emp::class;
 
-    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 0;
 
@@ -33,88 +38,46 @@ class EmpResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('user_id')
-                //     ->required()
-                //     ->numeric(),
-                Forms\Components\TextInput::make('name')
-                ->label(__('name'))
-                    ->required()
-                    ->maxLength(255),
-                    Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
+                RegisterAccountForm::getRegisterAccountFormComponent('Add employee','Primary information'),
+                Section::make(__('other information'))
+        ->schema([
+            Forms\Components\TextInput::make('sheet_api_url'),
+            Forms\Components\TextInput::make('post_url'),
 
-                    Forms\Components\TextInput::make('sheet_api_url')
-                    ->label('Google Sheet URL'),
-                    Forms\Components\TextInput::make('post_url'),
-                // Forms\Components\DateTimePicker::make('email_verified_at'),
-                // Forms\Components\TextInput::make('password')
-                //     ->password()
-                //     ->required()
-                //     ->dehydrated(false)
-                //     ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                // ->required()
-                ->dehydrated(true)
-                ->password()
-                ->label('Password')
-                ->dehydrateStateUsing(fn ($state) => \Hash::make($state)),
-
-                Forms\Components\TextInput::make('phone')
-                    ->numeric()
-                    ->maxLength(15)
-                    ->default(null),
-
-                Forms\Components\TextInput::make('number_of_hours_per_day')
-                    ->required()
-                    ->numeric()
-                    ->default(8),
-                // Forms\Components\TextInput::make('day_off')
-                //     ->required(),
-                //add ldj
-                Forms\Components\Select::make('day_off')
-                ->label('Days Off')
-                ->options([
-                    'Sunday' => 'Sunday',
-                    'Monday' => 'Monday',
-                    'Tuesday' => 'Tuesday',
-                    'Wednesday' => 'Wednesday',
-                    'Thursday' => 'Thursday',
-                    'Friday' => 'Friday',
-                    'Saturday' => 'Saturday',
-                ])
-                ->multiple() // لدعم اختيار أيام متعددة
-                ->required()
-                ->default(['Friday']) // القيمة الافتراضية
-                ->dehydrated(true) // تأكد من إرسال الحقل عند الحفظ
-                ->afterStateHydrated(function ($component, $state) {
-                    if (is_string($state)) {
-                        $component->state(json_decode($state, true));
-                    }
-                }),
-                Forms\Components\Select::make('request_status')
-    ->label('Request Status')
-    ->options([
-        'pending' => 'Pending',
-        'approved' => 'Approved',
-        'rejected' => 'Rejected',
-    ])
-    ->default('pending')
+            Forms\Components\TextInput::make('number_of_hours_per_day')
+            ->required()
+            ->numeric()
+            ->default(8),
+        Select::make('day_off')
+    ->options(DayOffEnum::options())
+    ->multiple()
+    ->required()
+    ->default([DayOffEnum::Friday->value])
+    ->dehydrated(true)
+    ->afterStateHydrated(function ($component, $state) {
+        if (is_string($state)) {
+            $component->state(json_decode($state, true));
+        }
+    }),
+Select::make('request_status')
+    ->options(RequestStatusEnum::options())
+    ->default(RequestStatusEnum::default())
     ->required()
     ->hiddenOn('create'),
 
 
-  Forms\Components\Toggle::make('is_admin')
-  ->required(),
-  Forms\Components\Toggle::make('can_show')
-  ->label('Can view other employees\' tasks')
-  ->default(false),
-  Forms\Components\Toggle::make('is_active')
-  ->label('Active')
-  ->default(true),
+Forms\Components\Toggle::make('is_admin')
+->required(),
+Forms\Components\Toggle::make('can_show')
+->default(false),
+Forms\Components\Toggle::make('is_active')
+->default(true),
 
-            ]);
+
+        ])
+        ->columnSpan(['lg' => 1]),
+
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -124,9 +87,6 @@ class EmpResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->numeric()
                     ->sortable(),
-                    // Tables\Columns\TextColumn::make('user_id')
-                    // ->numeric()
-                    // ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
@@ -138,11 +98,9 @@ class EmpResource extends Resource
                     ->sortable(),
                     Tables\Columns\IconColumn::make('is_admin')
                     ->boolean(),
-                    Tables\Columns\IconColumn::make('is_active') // عرض حالة التفعيل
-                    ->label('Active')
+                    Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
-                    Tables\Columns\BadgeColumn::make('request_status')
-                    ->label('Request Status')
+                    Tables\Columns\TextColumn::make('request_status')
                     ->formatStateUsing(function ($state) {
                         return match ($state) {
                             'pending' => 'Pending',
@@ -156,10 +114,9 @@ class EmpResource extends Resource
                         'approved' => 'success',
                         'rejected' => 'danger',
                     ])
-                    ->sortable(),
+                    ->sortable()->badge() ,
 
                     Tables\Columns\TextColumn::make('day_off')
-                    ->label('Days Off')
                     ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -173,7 +130,6 @@ class EmpResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('request_status')
-                ->label('Request Status')
                 ->options([
                     'pending' => 'Pending',
                     'approved' => 'Approved',
@@ -183,7 +139,6 @@ class EmpResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('approve')
-                ->label('Approve')
                 ->icon('heroicon-o-check-circle')
                 ->color('success')
                 ->action(function (Emp $record) {
@@ -240,7 +195,6 @@ $message = str_replace("\n", "\\n", $message);
                 ->visible(fn (Emp $record) => $record->request_status === 'pending'),
 
             Tables\Actions\Action::make('reject')
-                ->label('Reject')
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->action(function (Emp $record) {
@@ -254,7 +208,6 @@ $message = str_replace("\n", "\\n", $message);
             ])
             ->bulkActions([
                 BulkAction::make('export')
-                ->label('Export to Excel')
                 // ->icon('heroicon-o-document-download')
                 ->action(function (Collection $records) {
                     if ($records->isEmpty()) {
@@ -299,5 +252,26 @@ $message = str_replace("\n", "\\n", $message);
             return parent::getEloquentQuery();
         }
         return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+    }
+
+    /**
+     * Get the translated model label.
+     */
+    public static function getModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        return __("{$modelName}");
+    }
+
+    /**
+     * Get the translated plural model label.
+     */
+    public static function getPluralModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        $plural= Str::plural(Str::headline($modelName));
+        return  __("{$plural}");
     }
 }

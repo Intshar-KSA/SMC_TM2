@@ -24,7 +24,7 @@ class EditEmp extends EditRecord
     {
         $data['user_id'] = auth()->id();
 
-        // $data['day_off'] = implode(',', $data['day_off']);
+
 
         return $data;
     }

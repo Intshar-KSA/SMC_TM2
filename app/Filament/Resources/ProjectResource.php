@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\ProjectResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProjectResource\RelationManagers;
+use Illuminate\Support\Str;
 
 class ProjectResource extends Resource
 {
@@ -202,4 +203,24 @@ class ProjectResource extends Resource
     }
     return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
 }
+ /**
+     * Get the translated model label.
+     */
+    public static function getModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        return __("{$modelName}");
+    }
+
+    /**
+     * Get the translated plural model label.
+     */
+    public static function getPluralModelLabel(): string
+    {
+        $modelClass = static::$model;
+        $modelName = class_basename($modelClass);
+        $plural= Str::plural(Str::headline($modelName));
+        return  __("{$plural}");
+    }
 }
