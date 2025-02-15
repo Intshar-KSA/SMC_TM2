@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskFollowUpResource\Pages;
 use App\Filament\Resources\TaskFollowUpResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 use App\Models\TaskFollowUp;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -123,41 +124,12 @@ class TaskFollowUpResource extends Resource
         });
     }
 
-     /**
-     * Get the translated model label.
-     */
     public static function getModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
-
-        // Convert to headline case (e.g., "Task Follow Ups")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task follow ups"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
-        return __($formatted);
+        return ModelLabelHelper::getModelLabel(static::$model);
     }
 
-    /**
-     * Get the translated plural model label.
-     */
     public static function getPluralModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
-
-        // Convert to headline case (e.g., "Task Follow Ups")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task follow ups"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
-
-        // Pluralize the formatted string
-        $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
-
-        return __($plural); // Translate the plural label
-    }
-}
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
+    }}

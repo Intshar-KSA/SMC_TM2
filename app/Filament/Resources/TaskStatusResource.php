@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskStatusResource\Pages;
+use App\Helpers\ModelLabelHelper;
 use App\Models\TaskStatus;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -92,42 +93,15 @@ class TaskStatusResource extends Resource
         return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
     }
 
-    /**
-     * Get the translated model label.
-     */
     public static function getModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskStatus"
-
-        // Convert to headline case (e.g., "Task Status")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task status"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task status"
-
-        return __($formatted); // Translate the model label
+        return ModelLabelHelper::getModelLabel(static::$model);
     }
 
-    /**
-     * Get the translated plural model label.
-     */
     public static function getPluralModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskStatus"
-
-        // Convert to headline case (e.g., "Task Status")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task status"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task status"
-
-        // Pluralize the formatted string
-        $plural = Str::plural($formatted); // e.g., "Task status" -> "Task statuses"
-
-        return __($plural); // Translate the plural label
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
+
+
 }

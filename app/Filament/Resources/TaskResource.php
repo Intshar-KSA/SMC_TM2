@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmpResource\RelationManagers\ReceivedTasksRelationManager;
+use App\Filament\Resources\ProjectResource\RelationManagers\TasksRelationManager;
 use Filament\Forms;
 use App\Models\Task;
 use Filament\Tables;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TaskResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 use Illuminate\Support\Str;
 
 class TaskResource extends Resource
@@ -31,14 +33,14 @@ class TaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('project_id')
-                    ->relationship('user_project', 'name'), // Label will be auto-generated as "Project ID"
+                    ->relationship('user_project', 'name')->hiddenOn(TasksRelationManager::class),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255), // Label will be auto-generated as "Title"
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(), // Label will be auto-generated as "Description"
                 Forms\Components\Select::make('receiver_id')
-                    ->relationship('task_emp', 'name')->hiddenOn(ReceivedTasksRelationManager::class) , // Label will be auto-generated as "Receiver ID"
+                    ->relationship('task_emp', 'name')->hiddenOn(ReceivedTasksRelationManager::class) ,
                 Forms\Components\TextInput::make('time_in_minutes')
                     ->numeric()
                     ->default(null), // Label will be auto-generated as "Time In Minutes"
@@ -160,34 +162,13 @@ class TaskResource extends Resource
             });
     }
 
-    /**
-     * Get the translated model label.
-     */
     public static function getModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        return __("{$modelName}");
+        return ModelLabelHelper::getModelLabel(static::$model);
     }
 
-    /**
-     * Get the translated plural model label.
-     */
     public static function getPluralModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
-
-        // Convert to headline case (e.g., "Task Follow Ups")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task follow ups"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
-
-        // Pluralize the formatted string
-        $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
-
-        return __($plural); // Translate the plural label
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 }

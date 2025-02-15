@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UserEmployees;
 use App\Observers\EmployeeObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[ObservedBy([EmployeeObserver::class])]
+#[ScopedBy([UserEmployees::class])]
 class Emp extends  Authenticatable
 {
     use HasFactory;

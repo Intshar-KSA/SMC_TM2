@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('enable_group_notifications')->default(false);
             $table->boolean('enable_employee_notifications')->default(false);
             $table->string('work_group')->nullable();
+            $table->longText('company_policy')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

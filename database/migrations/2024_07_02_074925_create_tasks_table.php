@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('sender_id')->constrained('emps')->onDelete('cascade');
+            $table->foreignId('sender_id')->nullable()->constrained('emps')->onDelete('cascade');
             $table->foreignId('receiver_id')->constrained('emps')->onDelete('cascade');
             $table->integer('time_in_minutes')->nullable();
             $table->boolean('is_recurring')->default(false);
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->datetime('next_occurrence')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('tasks')->onDelete('cascade');
+            $table->integer('exact_time')->default(0);
             $table->timestamps();
         });
 

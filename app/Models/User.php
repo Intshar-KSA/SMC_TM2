@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function isSuperAdmin()
     {
-        return $this->type === 'super_admin';
+        return $this->type === 'super admin';
     }
 
     public function isAdmin()

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\ProjectAttachment;
+use App\Models\Scopes\UserProjects;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+#[ScopedBy([UserProjects::class])]
 class Project extends Model
 {
     use HasFactory;
@@ -13,18 +16,15 @@ class Project extends Model
     protected $fillable = [
         'user_id', 'name', 'whatsapp_group_id', 'start_date', 'end_date',
         'facebook_user',
-        'insta_user',
         'tiktok_user',
         'instagram_user',
         'snap_user',
         'x_user',
         'facebook_pass',
-        'insta_pass',
         'tiktok_pass',
         'instagram_pass',
         'snap_pass',
         'x_pass',
-
         'store_url',
         'store_user',
         'store_password'

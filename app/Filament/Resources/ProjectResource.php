@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\ProjectResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 use Illuminate\Support\Str;
 
 class ProjectResource extends Resource
@@ -37,8 +38,8 @@ class ProjectResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('whatsapp_group_id')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('insta_user'),
-                Forms\Components\TextInput::make('insta_pass'),
+                Forms\Components\TextInput::make('instagram_user'),
+                Forms\Components\TextInput::make('instagram_pass'),
                 Forms\Components\TextInput::make('tiktok_user'),
                 Forms\Components\TextInput::make('tiktok_pass'),
                 Forms\Components\TextInput::make('snap_user'),
@@ -48,11 +49,11 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('facebook_user')
                     ->nullable()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('instagram_pass'),
-                Forms\Components\TextInput::make('instagram_user'),
-                Forms\Components\TextInput::make('store_url'),
+                Forms\Components\TextInput::make('facebook_pass'),
+
                 Forms\Components\TextInput::make('store_user'),
                 Forms\Components\TextInput::make('store_password'),
+                Forms\Components\TextInput::make('store_url'),
                 Forms\Components\DatePicker::make('start_date'),
                 Forms\Components\DatePicker::make('end_date'),
             ]);
@@ -65,13 +66,11 @@ class ProjectResource extends Resource
                 Infolists\Components\TextEntry::make('user.name'),
                 Infolists\Components\TextEntry::make('name'),
                 Infolists\Components\TextEntry::make('whatsapp_group_id'),
-                Infolists\Components\TextEntry::make('insta_user'),
                 Infolists\Components\TextEntry::make('tiktok_user'),
                 Infolists\Components\TextEntry::make('instagram_user'),
                 Infolists\Components\TextEntry::make('snap_user'),
                 Infolists\Components\TextEntry::make('x_user'),
                 Infolists\Components\TextEntry::make('facebook_pass'),
-                Infolists\Components\TextEntry::make('insta_pass'),
                 Infolists\Components\TextEntry::make('tiktok_pass'),
                 Infolists\Components\TextEntry::make('instagram_pass'),
                 Infolists\Components\TextEntry::make('snap_pass'),
@@ -97,9 +96,6 @@ class ProjectResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('whatsapp_group_id')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('insta_user')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('tiktok_user')
@@ -166,40 +162,16 @@ class ProjectResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->type == "super admin") {
-            return parent::getEloquentQuery();
-        }
-        return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+        return parent::getEloquentQuery();
     }
-
-    /**
-     * Get the translated model label.
-     */
     public static function getModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        return __("{$modelName}");
+        return ModelLabelHelper::getModelLabel(static::$model);
     }
 
-    /**
-     * Get the translated plural model label.
-     */
     public static function getPluralModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass); // e.g., "TaskFollowUps"
-
-        // Convert to headline case (e.g., "Task Follow Ups")
-        $headline = Str::headline($modelName);
-
-        // Convert to lowercase and capitalize the first character of the first word
-        $formatted = Str::lower($headline); // e.g., "task follow ups"
-        $formatted = Str::ucfirst($formatted); // e.g., "Task follow ups"
-
-        // Pluralize the formatted string
-        $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
-
-        return __($plural); // Translate the plural label
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
+
 }

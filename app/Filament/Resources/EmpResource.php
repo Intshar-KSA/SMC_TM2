@@ -22,9 +22,10 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\EmpResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmpResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Str;
+
 
 class EmpResource extends Resource
 {
@@ -44,7 +45,7 @@ class EmpResource extends Resource
             Forms\Components\Select::make('user_id')
             ->relationship('user', 'name', function (Builder $query) {
                 return $query->where('type', 'admin');
-            })->hidden(auth()->user()->type == 'admin'),
+            })->hidden(auth()->user()->isAdmin()),
             Forms\Components\TextInput::make('sheet_api_url'),
             Forms\Components\TextInput::make('post_url'),
 
@@ -191,10 +192,7 @@ $message = str_replace("\n", "\\n", $message);
                     ->warning()
                     ->send();
             }
-                    // Notification::make()
-                    //     ->title('Request Approved')
-                    //     ->success()
-                    //     ->send();
+
                 })
                 ->visible(fn (Emp $record) => $record->request_status === 'pending'),
 
@@ -252,30 +250,16 @@ $message = str_replace("\n", "\\n", $message);
 
     public static function getEloquentQuery(): Builder
     {
-        if(auth()->user()->type=="super admin"){
-            return parent::getEloquentQuery();
-        }
-        return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+        return parent::getEloquentQuery();
     }
 
-    /**
-     * Get the translated model label.
-     */
     public static function getModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        return __("{$modelName}");
+        return ModelLabelHelper::getModelLabel(static::$model);
     }
 
-    /**
-     * Get the translated plural model label.
-     */
     public static function getPluralModelLabel(): string
     {
-        $modelClass = static::$model;
-        $modelName = class_basename($modelClass);
-        $plural= Str::plural(Str::headline($modelName));
-        return  __("{$plural}");
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 }

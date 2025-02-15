@@ -17,13 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('whatsapp_group_id')->nullable();
             $table->string('facebook_user')->nullable();
-            $table->string('insta_user')->nullable();
             $table->string('tiktok_user')->nullable();
             $table->string('instagram_user')->nullable();
             $table->string('snap_user')->nullable();
             $table->string('x_user')->nullable();
             $table->string('facebook_pass')->nullable();
-            $table->string('insta_pass')->nullable();
             $table->string('tiktok_pass')->nullable();
             $table->string('instagram_pass')->nullable();
             $table->string('snap_pass')->nullable();

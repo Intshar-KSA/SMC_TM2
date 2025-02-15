@@ -10,7 +10,7 @@ class UserInvitationWidget extends Widget
     public static function canView(): bool
     {
         // عرض الويدجت فقط إذا كان المستخدم مسجلاً الدخول
-        return auth()->check();
+        return auth()->user()->isAdmin();
     }
 
     public function getUserInvitationLink(): string

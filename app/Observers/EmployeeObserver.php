@@ -49,9 +49,11 @@ class EmployeeObserver
      * Handle the Emp "creating" event.
      */
     public function creating(Emp $emp): void
-    {if(auth()->user()->type == "admin"){
+    {
+   if(auth()->user()?->isAdmin())
+        {
         $emp->user_id = auth()->id();
-    }
+      }
 
     }
 }

@@ -5,9 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Emp;
 use App\Models\User;
+use App\Observers\TaskObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+#[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
     use HasFactory;
@@ -46,15 +49,7 @@ public function emp_project2()
 {
     return $this->belongsTo(Project::class, 'project_id');
 }
-// public function projectForEmp()
-// {
-//     return $this->belongsTo(Project::class, 'project_id');
-// }
-// public function emp_project()
-// {
-//     return $this->hasOneThrough(Project::class, Emp::class, 'id', 'id', 'sender_id', 'project_id')
-//                 ->where('emps.id', auth()->id());
-// }
+
 public function task_emp()
 {
     return $this->belongsTo(Emp::class,'sender_id')->where('user_id', auth()->id());

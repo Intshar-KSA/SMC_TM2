@@ -16,14 +16,14 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('emp_id')->constrained('emps');
             $table->string('name');
-            $table->string('campaign_type'); // awareness, converting, lead generation
-            $table->enum('platform', ['facebook', 'instagram', 'tiktok', 'twitter', 'linkedin']);
-            $table->decimal('daily_spend', 8, 2);
+            $table->string('campaign_type')->nullable();
+            $table->enum('platform', ['facebook', 'instagram', 'tiktok', 'twitter', 'linkedin'])->nullable();
+            $table->decimal('daily_spend', 8, 2)->nullable();
             $table->string('landing_page_url')->nullable();
             $table->string('sheet_url')->nullable();
-            $table->string('area');
-            $table->string('location_url');
-            $table->string('creatives_url');
+            $table->string('area')->nullable();
+            $table->string('location_url')->nullable();
+            $table->string('creatives_url')->nullable();
             $table->string('asset_id')->nullable();
             $table->date('start_date');
             $table->date('end_date');

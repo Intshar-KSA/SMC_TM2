@@ -23,6 +23,10 @@ return new class extends Migration
             $table->text('sheet_api_url')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->string('post_url')->nullable();
+            $table->boolean('can_show')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->string('request_status')->default('pending');
+            $table->unique(['email', 'user_id'], 'emps_email_user_id_unique');
             $table->rememberToken();
             $table->timestamps();
         });

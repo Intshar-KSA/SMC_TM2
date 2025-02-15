@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('project_plan_id')->constrained('project_plans');
             $table->foreignId('emp_id')->constrained('emps');
             $table->text('captions');
-            $table->text('des');
-            $table->string('hashtag');
-            $table->enum('type', ['post', 'video', 'reel', 'image']);
-            $table->string('platform'); // Use multi-select if needed in your UI
+            $table->text('des')->nullable();
+            $table->string('hashtag')->nullable();
+            $table->enum('type', ['post', 'video', 'reel', 'image', 'bio', 'covers'])->nullable();
+            $table->string('platform')->nullable();
             $table->enum('status', ['pending', 'posted', 'canceled']);
             $table->timestamps();
         });

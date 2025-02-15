@@ -34,9 +34,6 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('user_id')
-                //     ->required()
-                //     ->numeric(),
                 Forms\Components\Select::make('user_id')
                 ->relationship('user', 'name')
                 ->disabled(),
@@ -49,7 +46,6 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('store_url'),
                 Forms\Components\TextInput::make('store_user'),
                 Forms\Components\TextInput::make('store_password'),
-                Forms\Components\TextInput::make('insta_user'),
                 Forms\Components\TextInput::make('tiktok_user'),
                 Forms\Components\TextInput::make('instagram_user'),
                 Forms\Components\TextInput::make('snap_user'),
@@ -57,7 +53,6 @@ class ProjectResource extends Resource
                 Forms\Components\TextInput::make('facebook_user')
                 ->nullable()
                 ->maxLength(255),
-                Forms\Components\TextInput::make('insta_pass'),
                 Forms\Components\TextInput::make('tiktok_pass'),
                 Forms\Components\TextInput::make('instagram_pass'),
                 Forms\Components\TextInput::make('snap_pass'),
@@ -73,21 +68,9 @@ class ProjectResource extends Resource
 
             ]);
     }
-    // 'insta_user',
-    // 'tiktok_user',
-    // 'instagram_user',
-    // 'snap_user',
-    // 'x_user',
-    // 'facebook_pass',
-    // 'insta_pass',
-    // 'tiktok_pass',
-    // 'instagram_pass',
-    // 'snap_pass',
-    // 'x_pass',
 
-    // 'store_url',
-    // 'store_user',
-    // 'store_password'
+
+
     public static function infolist(Infolist $infolist): Infolist
     {
 
@@ -96,14 +79,11 @@ class ProjectResource extends Resource
                 Infolists\Components\TextEntry::make('user.name'),
                     Infolists\Components\TextEntry::make('name'),
                     Infolists\Components\TextEntry::make('whatsapp_group_id'),
-
-                    Infolists\Components\TextEntry::make('insta_user'),
                     Infolists\Components\TextEntry::make('tiktok_user'),
                     Infolists\Components\TextEntry::make('instagram_user'),
                     Infolists\Components\TextEntry::make('snap_user'),
                     Infolists\Components\TextEntry::make('x_user'),
                     Infolists\Components\TextEntry::make('facebook_pass'),
-                    Infolists\Components\TextEntry::make('insta_pass'),
                     Infolists\Components\TextEntry::make('tiktok_pass'),
                     Infolists\Components\TextEntry::make('instagram_pass'),
                     Infolists\Components\TextEntry::make('snap_pass'),
@@ -134,7 +114,6 @@ class ProjectResource extends Resource
                     ->date()
                     ->sortable(),
                     TextColumn::make('whatsapp_group_id')->label('Whatsapp Group ID')->sortable()->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('insta_user')->label('Instagram User')->sortable()->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('tiktok_user')->label('Tiktok User')->sortable()->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('instagram_user')->label('Instagram User')->sortable()->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('snap_user')->label('Snap User')->sortable()->toggleable(isToggledHiddenByDefault: true),
