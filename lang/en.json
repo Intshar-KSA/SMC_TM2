@@ -65,8 +65,8 @@
     "Task statuses": "Task Statuses",
     "Taskstatus": "TaskStatus",
     "Only for admin": "Only for admin*",
-    "Is completed": " is completed",
-    "Is cancelled": " Is cancelled",
+    "Is completed": "is completed",
+    "Is cancelled": "Is cancelled",
     "Is completely": "Is completely",
     "Send company policy": "Send Company Policy",
     "Success": "Success",
@@ -90,5 +90,11 @@
     "Store password": "Store Password",
     "Instagram pass": "Instagram Password",
     "Facebook pass": "Facebook Password",
-    "Store url": "Store url"
+    "Store url": "Store url",
+    "Employee name": "Employee name",
+    "Total minutes": "Total Time (mins)",
+    "Insta user": "Instagram user",
+    "Only for admin*": "Only for the official*",
+    "Insta pass": "Instagram password",
+    "Employee task summary": "Employee task summary"
 }

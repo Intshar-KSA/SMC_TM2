@@ -64,13 +64,11 @@
     "Reciver id": "معرف المتلقي",
     "Created until": "تم إنشاؤها حتى",
     "Task statuses": "حالات المهمة",
-    "Taskstatus": "TaskStatus",
-    " is completed": "تم الانتهاء",
-    "Only for admin*": "فقط للمسؤول*",
-    " is cancelled": "تم إلغاؤه",
-    "Only for admin": "فقط للمسؤول*",
+    "Taskstatus": "حالات المهمة",
     "Is completed": "تم الانتهاء",
+    "Only for admin*": "فقط للمسؤول*",
     "Is cancelled": "تم إلغاؤه",
+    "Only for admin": "فقط للمسؤول*",
     "Is completely": "تماما",
     "Send company policy": "إرسال سياسة الشركة",
     "Success": "نجاح",
@@ -95,5 +93,8 @@
     "Store password": "تخزين كلمة المرور",
     "Instagram pass": "كلمة مرور Instagram",
     "Facebook pass": "كلمة مرور Facebook",
-    "Store url": "متجر URL"
+    "Store url": "متجر URL",
+    "Employee name": "اسم الموظف",
+    "Total minutes": "الوقت الإجمالي (بالدقائق)",
+    "Employee task summary": "ملخص مهمة الموظف"
 }

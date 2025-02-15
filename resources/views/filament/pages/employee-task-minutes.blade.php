@@ -1,11 +1,11 @@
 <x-filament::page>
-    <h1 class="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Employee Task Summary</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">{{ __('Employee task summary') }}</h1>
 
     <div class="mb-6 flex justify-center">
         <form method="GET" action="{{ url()->current() }}" class="flex items-center space-x-4">
             <input type="date" name="start_date" class="p-2 rounded-md bg-gray-200 dark:bg-gray-800 dark:text-gray-300 text-gray-900" value="{{ request('start_date') }}">
             <input type="date" name="end_date" class="p-2 rounded-md bg-gray-200 dark:bg-gray-800 dark:text-gray-300 text-gray-900" value="{{ request('end_date') }}">
-            
+
             <!-- زر الفلترة -->
             <button type="submit" class="bg-blue-600 text-black p-2 rounded-md hover:bg-blue-700 transition duration-200 dark:bg-yellow-400 dark:text-black dark:hover:bg-yellow-500">
                 Filter
@@ -17,8 +17,8 @@
         <table class="min-w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
             <thead class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-300">
                 <tr>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Employee Name</th>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Total Minutes</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Employee name') }}</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Total minutes') }}</th>
                     <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Total Hours</th>
                     <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Exact Time (mins)</th>
                     <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Exact Time (hrs)</th>

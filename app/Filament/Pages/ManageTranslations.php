@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Pages;
 
 use Filament\Forms\Components\KeyValue;
@@ -161,3 +160,4 @@ class ManageTranslations extends Page implements HasForms
         ];
     }
 }
+
