@@ -61,6 +61,8 @@ class TaskResource extends Resource
                     ->sortable(), // Label will be auto-generated as "Project Owner Name"
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(), // Label will be auto-generated as "Title"
+                    Tables\Columns\TextColumn::make('project.name')
+                    ->sortable(), // Label will be auto-generated as "Project Name"
                 Tables\Columns\TextColumn::make('sender.name')
                     ->sortable(), // Label will be auto-generated as "Sender Name"
                 Tables\Columns\TextColumn::make('receiver.name')
