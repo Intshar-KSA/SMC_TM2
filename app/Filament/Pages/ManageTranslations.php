@@ -1,17 +1,21 @@
 <?php
+
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\File;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use Filament\Tables;
 
 class ManageTranslations extends Page implements HasForms
 {
@@ -38,17 +42,26 @@ class ManageTranslations extends Page implements HasForms
                 ->label('Language')
                 ->options(config('app.supported_locales'))
                 ->reactive()
-                ->afterStateUpdated(fn ($state) => $this->changeLocale($state)),
-
-            KeyValue::make('translations')
-                ->label('Translations')
-                ->keyLabel('Key')
-                ->valueLabel('Value')
-                ->addable(true)
-                ->editableKeys(true)
-                ->editableValues(true)
-                ->deletable(true),
+                ->afterStateUpdated(fn ($state) => $this->changeLocale($state))->columnSpan(2),
         ];
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('key')->label('Key')->sortable(),
+                TextColumn::make('value')->label('Value')->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Edit Translation')
+                    ->form([
+                        TextInput::make('value')->label('Value')->required(),
+                    ])
+                    ->action(fn ($record, $data) => $this->updateTranslation($record, $data['value'])),
+            ])
+            ->records(array_map(fn ($key, $value) => ['key' => $key, 'value' => $value], array_keys($this->translations), $this->translations));
     }
 
     public function loadTranslations(): void
@@ -63,16 +76,16 @@ class ManageTranslations extends Page implements HasForms
         $this->loadTranslations();
     }
 
-    protected function formatKey(string $key): string
+    public function updateTranslation($key, $value)
     {
-        return ucfirst(strtolower(str_replace('_', ' ', $key)));
+        $this->translations[$key] = $value;
     }
 
     public function saveTranslations(): void
     {
         // Validate translations before saving
         $validator = Validator::make($this->translations, [
-            '*' => 'required|string', // Ensure all values are strings
+            '*' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -84,14 +97,11 @@ class ManageTranslations extends Page implements HasForms
             return;
         }
 
-        // Format keys before saving
         $formattedTranslations = [];
         foreach ($this->translations as $key => $value) {
-            $formattedKey = $this->formatKey($key);
-            $formattedTranslations[$formattedKey] = $value;
+            $formattedTranslations[$key] = $value;
         }
 
-        // Save formatted translations for the current locale
         $currentLocalePath = lang_path("{$this->locale}.json");
         if (!File::put($currentLocalePath, json_encode($formattedTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
             Notification::make()
@@ -102,7 +112,6 @@ class ManageTranslations extends Page implements HasForms
             return;
         }
 
-        // Ensure new keys exist in other locales and translate their values
         $locales = array_keys(config('app.supported_locales'));
         foreach ($locales as $locale) {
             if ($locale === $this->locale) {
@@ -114,7 +123,6 @@ class ManageTranslations extends Page implements HasForms
 
             foreach ($formattedTranslations as $key => $value) {
                 if (!array_key_exists($key, $existingTranslations)) {
-                    // Translate the value into the target locale
                     $translatedValue = $this->translateValue($value, $this->locale, $locale);
                     $existingTranslations[$key] = $translatedValue;
                 }
@@ -144,7 +152,6 @@ class ManageTranslations extends Page implements HasForms
             $translator->setTarget($targetLocale);
             return $translator->translate($value);
         } catch (\Exception $e) {
-            // Log the error and return the original value if translation fails
             Log::error("Translation failed: {$e->getMessage()}");
             return $value;
         }
@@ -160,4 +167,3 @@ class ManageTranslations extends Page implements HasForms
         ];
     }
 }
-
