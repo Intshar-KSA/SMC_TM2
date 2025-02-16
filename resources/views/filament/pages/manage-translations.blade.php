@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <form wire:submit.prevent="saveTranslations">
+    <form wire:submit.prevent="addTranslation">
         {{ $this->form }}
     </form>
 

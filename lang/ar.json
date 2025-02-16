@@ -1,6 +1,6 @@
 {
     "Request form title": "طلب تسجيل موظف جديد",
-    "Email": "البريد الإلكتروني",
+    "Email": "البريد الإلكترونيgg",
     "Phone": "رقم الهاتف",
     "Submit": "إرسال الطلب",
     "Success message": "تم تقديم طلبك بنجاح. سيتم مراجعته قريبًا.",
@@ -96,5 +96,8 @@
     "Store url": "متجر URL",
     "Employee name": "اسم الموظف",
     "Total minutes": "الوقت الإجمالي (بالدقائق)",
-    "Employee task summary": "ملخص مهمة الموظف"
+    "Employee task summary": "ملخص مهمة الموظف",
+    "wwe": "wwe",
+    "go": "يذهب",
+    "leave": "يترك"
 }
