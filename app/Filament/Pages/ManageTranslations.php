@@ -27,11 +27,14 @@ class ManageTranslations extends Page implements HasForms
     protected static ?string $navigationGroup = 'Settings';
 
     public $translations = [];
+    public $locales = [];
     public $locale = 'en';
+
 
     public function mount(): void
     {
         $this->locale = app()->getLocale();
+        $this->locales = array_keys(config('app.supported_locales'));
         $this->loadTranslations();
     }
 
@@ -67,7 +70,7 @@ class ManageTranslations extends Page implements HasForms
 
     public function loadTranslations(): void
     {
-        $this->syncTranslations();
+        $this->syncTranslations($this->translations);
         $path = lang_path("{$this->locale}.json");
         $this->translations = File::exists($path) ? json_decode(File::get($path), true) : [];
     }
@@ -82,9 +85,9 @@ class ManageTranslations extends Page implements HasForms
 
     public function addTranslation(string $key, string $value)
     {
-        $locales = array_keys(config('app.supported_locales')); // Get all supported locales
 
-        foreach ($locales as $locale) {
+
+        foreach ($this->locales as $locale) {
             $path = lang_path("{$locale}.json");
 
             // Load existing translations or initialize an empty array
@@ -108,11 +111,10 @@ class ManageTranslations extends Page implements HasForms
         }
     }
 
-    public function syncTranslations(): void
+    public function syncTranslations($translations): void
 {
-    // Ensure new keys exist in other locales and translate their values
-    $locales = array_keys(config('app.supported_locales'));
-    foreach ($locales as $locale) {
+
+    foreach ($this->locales as $locale) {
         if ($locale === $this->locale) {
             continue;
         }
@@ -120,7 +122,7 @@ class ManageTranslations extends Page implements HasForms
         $path = lang_path("{$locale}.json");
         $existingTranslations = File::exists($path) ? json_decode(File::get($path), true) : [];
 
-        foreach ($this->translations as $key => $value) {
+        foreach ($translations as $key => $value) {
             if (!array_key_exists($key, $existingTranslations)) {
                 // Translate the value into the target locale
                 $translatedValue = $this->translateValue($value, $this->locale, $locale);
@@ -155,11 +157,8 @@ class ManageTranslations extends Page implements HasForms
     }
 
     // Format keys before saving
-    $formattedTranslations = [];
-    foreach ($this->translations as $key => $value) {
-        $formattedKey = $this->formatKey($key);
-        $formattedTranslations[$formattedKey] = $value;
-    }
+    $formattedTranslations= $this->getFormattedTranslations();
+
 
     // Save formatted translations for the current locale
     $currentLocalePath = lang_path("{$this->locale}.json");
@@ -178,19 +177,28 @@ class ManageTranslations extends Page implements HasForms
         ->send();
 }
 
-
+protected function getFormattedTranslations(): array
+{
+    $formattedTranslations = [];
+    foreach ($this->translations as $key => $value) {
+        $formattedKey = $this->formatKey($key);
+        $formattedTranslations[$formattedKey] = $value;
+    }
+    return $formattedTranslations;
+}
     protected function getActions(): array
     {
         return [
             Action::make('addTranslation')
                 ->label('Add Translation')
                 ->form([
-                    TextInput::make('newKey')->label('Key')->required(),
-                    TextInput::make('newValue')->label('Value')->required(),
+                    TextInput::make('key')->label('Key')->required(),
+                    TextInput::make('value')->label('Value')->required(),
                 ])
                 ->action(function (array $data)  {
-                    // dump($data);
-                 return    $this->addTranslation($data['newKey'],$data['newValue']);
+
+                 $this->addTranslation($data['key'],$data['value']);
+                 return  $this->loadTranslations();
                 } ),
                 Action::make('saveTranslations')
                 ->label('Save Translations')
