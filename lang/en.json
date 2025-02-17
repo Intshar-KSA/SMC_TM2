@@ -139,5 +139,10 @@
     "Enable employee notifications": "Enable employee notifications",
     "Setting": "Settings",
     "Task emp": "Task employ",
-    "Updated at": "Updated at"
+    "Updated at": "Updated at",
+    "Attach project": "Attach project",
+      "Des": "Description",
+      "Url": "URL",
+      "Is in own drive": "Is In Own Drive",
+      "Emp name": "Employee Name"
 }
