@@ -7,7 +7,7 @@
 
             @if ($sheetApiUrl)
                 <a href="{{ $sheetApiUrl }}" target="_blank" class="btn btn-primary">
-                    Open My Task Sheet
+                    {{ __('Open my task sheet') }}
                 </a>
             @else
                 <p>No sheet URL available</p>
