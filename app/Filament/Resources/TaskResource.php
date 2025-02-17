@@ -152,16 +152,17 @@ class TaskResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->type == "super admin") {
-            return parent::getEloquentQuery();
-        }
+        // if (auth()->user()->type == "super admin") {
+        //     return parent::getEloquentQuery();
+        // }
 
-        $userId = auth()->guard('emp')->check() ? auth()->guard('emp')->user_id : auth()->user()->id;
+        // $userId = auth()->guard('emp')->check() ? auth()->guard('emp')->user_id : auth()->user()->id;
 
-        return parent::getEloquentQuery()
-            ->whereHas('user_project', function (Builder $query) use ($userId) {
-                $query->where('user_id', $userId);
-            });
+        // return parent::getEloquentQuery()
+        //     ->whereHas('user_project', function (Builder $query) use ($userId) {
+        //         $query->where('user_id', $userId);
+        //     });
+        return parent::getEloquentQuery();
     }
 
     public static function getModelLabel(): string

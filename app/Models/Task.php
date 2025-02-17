@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Emp;
+use App\Models\Scopes\TasksScope;
 use App\Models\User;
 use App\Observers\TaskObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 #[ObservedBy([TaskObserver::class])]
+#[ScopedBy([TasksScope::class])]
 class Task extends Model
 {
     use HasFactory;
@@ -42,7 +45,6 @@ public function emp_project()
 {
 
     $user=User::find(auth()->user()->user_id);
-// dd($user);
     return $this->belongsTo(Project::class,'project_id')->where('user_id', $user->id);
 }
 public function emp_project2()

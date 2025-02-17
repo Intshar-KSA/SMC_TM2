@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Filament\Tables;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 
@@ -136,5 +137,21 @@ protected function getFormattedTranslations(): array
             Log::error("Translation failed: {$e->getMessage()}");
             return $value;
         }
+    }
+
+
+    public static function canAccess(): bool
+    {
+        $user = Auth::user();
+        $guard = Auth::getDefaultDriver();
+
+
+        if ($guard === 'web') {
+            if( $user?->isSuperAdmin()??false) {
+                return true;
+            }
+
+            }
+        return false;
     }
 }

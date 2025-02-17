@@ -166,9 +166,7 @@ class ProjectResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // if(auth()->user()->type=="super admin"){
-        //     return parent::getEloquentQuery();
-        // }
-        return parent::getEloquentQuery()->where('user_id', auth()->user()->user_id);
+       
+        return parent::getEloquentQuery();
     }
 }
