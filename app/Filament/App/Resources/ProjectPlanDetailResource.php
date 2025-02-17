@@ -19,8 +19,6 @@ class ProjectPlanDetailResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
-
-    // protected static ?string $navigationIcon = 'heroicon-o-list';
     public static function getNavigationGroup(): string
     {
         return __('Projects management');
@@ -32,42 +30,24 @@ class ProjectPlanDetailResource extends Resource
             ->schema([
                 Select::make('project_plan_id')
                     ->relationship('projectPlan', 'name')
-                    ->required()
-                    ->label('Project Plan'),
-                // Select::make('emp_id')
-                //     ->relationship('emp', 'name')
-                //     ->required()
-                //     ->label('Employee'),
+                    ->required(),
                 TextInput::make('captions')
-                    ->label('Captions')
-                    ->required()
-                    ,
-
-                TextInput::make('hashtag')
-                ->label('Hashtag')
-                // ->required()
-                ,
-                Textarea::make('des')
-                    ->label('Description')
-                    // ->required()
-                    ,
+                    ->required(),
+                TextInput::make('hashtag'),
+                Textarea::make('des'),
                 Select::make('type')
-                ->options(WhatsAppService::getOptions())
-                    // ->required()
-                    ->label('Type'),
+                    ->options(WhatsAppService::getOptions()),
                 Select::make('platform')
                     ->multiple()
                     ->options(WhatsAppService::getPlatformOptions())
-                    ->required()
-                    ->label('Platform'),
+                    ->required(),
                 Select::make('status')
                     ->options([
                         'pending' => 'Pending',
                         'posted' => 'Posted',
                         'canceled' => 'Canceled',
                     ])
-                    ->required()
-                    ->label('Status'),
+                    ->required(),
             ]);
     }
 
@@ -75,15 +55,13 @@ class ProjectPlanDetailResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('projectPlan.name')->label('Project Plan')->sortable()->searchable(),
-                TextColumn::make('emp.name')->label('Employee')->sortable()->searchable(),
-                TextColumn::make('type')->label('Type')->sortable(),
-                TextColumn::make('platform')->label('Platform')->sortable(),
-                TextColumn::make('status')->label('Status')->sortable(),
+                TextColumn::make('projectPlan.name')->sortable()->searchable(),
+                TextColumn::make('emp.name')->sortable()->searchable(),
+                TextColumn::make('type')->sortable(),
+                TextColumn::make('platform')->sortable(),
+                TextColumn::make('status')->sortable(),
             ])
-            ->filters([
-                // Add any filters if needed
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -91,22 +69,23 @@ class ProjectPlanDetailResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    public static function getPages(): array
-{
-    return [
-        'index' => Pages\ListProjectPlanDetails::route('/'),
-        'create' => Pages\CreateProjectPlanDetail::route('/create'),
-        'edit' => Pages\EditProjectPlanDetail::route('/{record}/edit'),
-        // 'view' => Pages\ViewProjectPlan::route('/{record}'),
-    ];
-}
-public static function getModelLabel(): string
-{
-    return ModelLabelHelper::getModelLabel(static::$model);
-}
 
-public static function getPluralModelLabel(): string
-{
-    return ModelLabelHelper::getPluralModelLabel(static::$model);
-}
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProjectPlanDetails::route('/'),
+            'create' => Pages\CreateProjectPlanDetail::route('/create'),
+            'edit' => Pages\EditProjectPlanDetail::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return ModelLabelHelper::getModelLabel(static::$model);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
+    }
 }
