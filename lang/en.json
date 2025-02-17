@@ -1,5 +1,5 @@
 {
-    "Request form title": "New Employee Registration Request rrr",
+    "Request form title": "New Employee Registration Request ",
     "Email": "Email",
     "Phone": "Phone Number",
     "Submit": "Submit Request",
@@ -98,9 +98,23 @@
     "Insta pass": "Instagram password",
     "Employee task summary": "Employee task summary",
     "wwe": "wwe",
-    "go": "go",
-    "leave": "leave",
+    "go": "يذهب",
+    "leave": "يترك",
+    "key": "كبير",
+    "value": "كبير",
     "big": "big",
     "new": "new",
-    "last": "last"
+    "last": "آخر",
+    "water": "tendon",
+    "shose": "shose",
+    "Key": "Key",
+    "Value": "Value",
+    "Actions": "Actions",
+    "Manage Translations": "Manage Translations",
+    "Add Translation": "Add Translation",
+    "en": "English",
+    "ar": "Arabic",
+    "Edit": "Edit",
+    "Cancel": "Cancel",
+    "Save": "Save"
 }

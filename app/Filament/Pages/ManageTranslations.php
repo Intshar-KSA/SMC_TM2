@@ -17,6 +17,7 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 use Filament\Tables;
 use Illuminate\Support\Facades\Log;
 
+
 class ManageTranslations extends Page implements HasForms
 {
     use InteractsWithForms;
@@ -38,26 +39,16 @@ class ManageTranslations extends Page implements HasForms
         $this->loadTranslations();
     }
 
-    protected function getFormSchema(): array
-    {
-        return [
-            Select::make('locale')
-                ->label('Language')
-                ->options(config('app.supported_locales'))
-                ->reactive()
-                ->afterStateUpdated(fn ($state) => $this->changeLocale($state))
-                ->columnSpan(2),
-        ];
-    }
 
-  
+
+
 
     public function loadTranslations(): void
     {
-        $this->syncTranslations($this->translations);
         $path = lang_path("{$this->locale}.json");
         $this->translations = File::exists($path) ? json_decode(File::get($path), true) : [];
     }
+
 
     public function changeLocale($locale): void
     {
@@ -80,7 +71,8 @@ class ManageTranslations extends Page implements HasForms
             // Check if the key already exists, if not, add it
             if (!array_key_exists($key, $existingTranslations)) {
                 $translatedValue = ($locale ===  $this->locale) ? $value : $this->translateValue($value,  $this->locale, $locale);
-                $existingTranslations[$key] = $translatedValue;
+                $formattedKey = $this->formatKey($key);
+                $existingTranslations[$formattedKey] = $translatedValue;
             }
 
             // Save the updated translations back to the file
@@ -95,33 +87,7 @@ class ManageTranslations extends Page implements HasForms
         }
     }
 
-    public function syncTranslations($translations): void
-{
 
-    foreach ($this->locales as $locale) {
-        if ($locale === $this->locale) {
-            continue;
-        }
-
-        $path = lang_path("{$locale}.json");
-        $existingTranslations = File::exists($path) ? json_decode(File::get($path), true) : [];
-
-        foreach ($translations as $key => $value) {
-            if (!array_key_exists($key, $existingTranslations)) {
-                // Translate the value into the target locale
-                $translatedValue = $this->translateValue($value, $this->locale, $locale);
-                $existingTranslations[$key] = $translatedValue;
-            }
-        }
-
-        if (!File::put($path, json_encode($existingTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
-                Log::error("TFailed to save translations for locale: {$locale}.");
-            return;
-        }
-
-    }
-
-}
 
 
 
@@ -149,10 +115,7 @@ protected function getFormattedTranslations(): array
                  $this->addTranslation($data['key'],$data['value']);
                  return  $this->loadTranslations();
                 } ),
-                Action::make('saveTranslations')
-                ->label('Save Translations')
-                ->action('saveTranslations')
-                ->color('primary'),
+
         ];
     }
 

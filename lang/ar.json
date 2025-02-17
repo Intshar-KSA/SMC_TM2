@@ -1,6 +1,6 @@
 {
-    "Request form title": "طلب تسجيل موظف جديدh",
-    "Email": "البريد الإلكترونيgg",
+    "Request form title": "طلب تسجيل موظف جديد",
+    "Email": "البريد الإلكتروني",
     "Phone": "رقم الهاتف",
     "Submit": "إرسال الطلب",
     "Success message": "تم تقديم طلبك بنجاح. سيتم مراجعته قريبًا.",
@@ -104,5 +104,17 @@
     "value": "كبير",
     "big": "big",
     "new": "new",
-    "last": "آخر"
+    "last": "آخر",
+    "water": "water",
+    "shose": "أحذية",
+    "Key": "مفتاح",
+    "Value": "قيمة",
+    "Actions": "الإجراءات",
+    "Manage Translations": "إدارة الترجمات",
+    "Add Translation": "إضافة الترجمة",
+    "en": "إنجليزي",
+    "ar": "عربي",
+    "Edit": "تعديل",
+    "Cancel": "يلغي",
+    "Save": "يحفظ"
 }
