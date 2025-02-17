@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Filament\Tables;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -106,7 +107,7 @@ protected function getFormattedTranslations(): array
     {
         return [
             Action::make('addTranslation')
-                ->label('Add Translation')
+                // ->label('Add Translation')
                 ->form([
                     TextInput::make('key')->label('Key')->required(),
                     TextInput::make('value')->label('Value')->required(),
@@ -157,5 +158,12 @@ protected function getFormattedTranslations(): array
     public static function getNavigationGroup(): string
     {
         return __('General settings');
+    }
+    public function getTitle(): string | Htmlable
+    {
+        return __(static::$title ?? (string) str(class_basename(static::class))
+        ->kebab()
+        ->replace('-', ' ')
+        ->title());
     }
 }
