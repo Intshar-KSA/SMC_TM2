@@ -107,7 +107,7 @@ protected function getFormattedTranslations(): array
     {
         return [
             Action::make('addTranslation')
-                // ->label('Add Translation')
+                ->label(__('Add translation'))
                 ->form([
                     TextInput::make('key')->label('Key')->required(),
                     TextInput::make('value')->label('Value')->required(),
