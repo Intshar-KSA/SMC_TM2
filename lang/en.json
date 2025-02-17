@@ -125,5 +125,19 @@
     "Exact hours": "Exact hours",
     "Difference": "Difference",
     "Hrs": "Hours",
-    "Mins": "Minutes"
+    "Mins": "Minutes",
+    "General settings": "General Settings",
+    "Enter your phone number": "Enter your phone number",
+    "Enter company policy": "Enter company policy",
+    "User profile updated": "User profile updated!",
+    "W api profile id": "W API Profile ID",
+    "W api token": "W API Token",
+    "Work group": "Work Group",
+    "Company policy": "Company Policy",
+    "Enable whatsapp notifications": "Enable WhatsApp notifications",
+    "Enable group notifications": "Enable group notifications",
+    "Enable employee notifications": "Enable employee notifications",
+    "Setting": "Settings",
+    "Task emp": "Task employ",
+    "Updated at": "Updated at"
 }

@@ -154,4 +154,8 @@ protected function getFormattedTranslations(): array
             }
         return false;
     }
+    public static function getNavigationGroup(): string
+    {
+        return __('General settings');
+    }
 }

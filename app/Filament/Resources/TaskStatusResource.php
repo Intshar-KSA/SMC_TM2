@@ -19,7 +19,11 @@ class TaskStatusResource extends Resource
     protected static ?string $model = TaskStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';
-    protected static ?string $navigationGroup = 'General Settings';
+    
+    public static function getNavigationGroup(): string
+    {
+        return __('General settings');
+    }
 
     public static function form(Form $form): Form
     {
