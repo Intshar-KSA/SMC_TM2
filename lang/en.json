@@ -1,5 +1,5 @@
 {
-    "Request form title": "New Employee Registration Request",
+    "Request form title": "New Employee Registration Request rrr",
     "Email": "Email",
     "Phone": "Phone Number",
     "Submit": "Submit Request",
@@ -101,5 +101,6 @@
     "go": "go",
     "leave": "leave",
     "big": "big",
-    "new": "new"
+    "new": "new",
+    "last": "last"
 }

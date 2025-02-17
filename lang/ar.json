@@ -1,5 +1,5 @@
 {
-    "Request form title": "طلب تسجيل موظف جديد",
+    "Request form title": "طلب تسجيل موظف جديدh",
     "Email": "البريد الإلكترونيgg",
     "Phone": "رقم الهاتف",
     "Submit": "إرسال الطلب",
@@ -103,5 +103,6 @@
     "key": "كبير",
     "value": "كبير",
     "big": "big",
-    "new": "new"
+    "new": "new",
+    "last": "آخر"
 }

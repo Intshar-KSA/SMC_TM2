@@ -50,23 +50,7 @@ class ManageTranslations extends Page implements HasForms
         ];
     }
 
-    public function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('key')->label('Key')->sortable(),
-                TextColumn::make('value')->label('Value')->sortable(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalHeading('Edit Translation')
-                    ->form([
-                        TextInput::make('value')->label('Value')->required(),
-                    ])
-                    ->action(fn ($record, $data) => $this->updateTranslation($record, $data['value'])),
-            ])
-            ->records(array_map(fn ($key, $value) => ['key' => $key, 'value' => $value], array_keys($this->translations), $this->translations));
-    }
+  
 
     public function loadTranslations(): void
     {
@@ -140,42 +124,7 @@ class ManageTranslations extends Page implements HasForms
 }
 
 
-    public function saveTranslations(): void
-{
-    // Validate translations before saving
-    $validator = Validator::make($this->translations, [
-        '*' => 'required|string', // Ensure all values are strings
-    ]);
 
-    if ($validator->fails()) {
-        Notification::make()
-            ->title('Validation Error')
-            ->body('Please ensure all translation values are valid strings.')
-            ->danger()
-            ->send();
-        return;
-    }
-
-    // Format keys before saving
-    $formattedTranslations= $this->getFormattedTranslations();
-
-
-    // Save formatted translations for the current locale
-    $currentLocalePath = lang_path("{$this->locale}.json");
-    if (!File::put($currentLocalePath, json_encode($formattedTranslations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
-        Notification::make()
-            ->title('Error')
-            ->body('Failed to save translations for the current locale.')
-            ->danger()
-            ->send();
-        return;
-    }
-
-    Notification::make()
-        ->title('Translations updated successfully!')
-        ->success()
-        ->send();
-}
 
 protected function getFormattedTranslations(): array
 {
