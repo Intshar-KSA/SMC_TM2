@@ -177,5 +177,10 @@
     "Captions": "التسميات التوضيحية",
     "Status": "حالة",
     "Hashtag": "الوسم",
-    "Open my task sheet": "افتح ورقة المهام الخاصة بي"
+    "Open my task sheet": "افتح ورقة المهام الخاصة بي",
+    "Task follow": "تتبع المهمة",
+    "Task id": "مهمة",
+    "Task status for user": "حاله مهمة المستخدم",
+    "Note": "ملحوظة",
+    "Task follow up": "متابعة المهمة"
 }
