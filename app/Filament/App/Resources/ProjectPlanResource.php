@@ -19,11 +19,15 @@ use App\Helpers\ModelLabelHelper;
 class ProjectPlanResource extends Resource
 {
     protected static ?string $model = ProjectPlan::class;
-    protected static ?string $navigationGroup = 'Projects Management';
+    // protected static ?string $navigationGroup = 'Projects Management';
     protected static ?int $navigationSort = 4;
 
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
+    public static function getNavigationGroup(): string
+    {
+        return __('Projects management');
+    }
 
     public static function form(Forms\Form $form): Forms\Form
     {

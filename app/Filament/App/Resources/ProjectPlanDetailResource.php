@@ -16,11 +16,15 @@ use App\Services\WhatsAppService;
 class ProjectPlanDetailResource extends Resource
 {
     protected static ?string $model = ProjectPlanDetail::class;
-    protected static ?string $navigationGroup = 'Projects Management';
+
     protected static ?int $navigationSort = 5;
 
 
     // protected static ?string $navigationIcon = 'heroicon-o-list';
+    public static function getNavigationGroup(): string
+    {
+        return __('Projects management');
+    }
 
     public static function form(Forms\Form $form): Forms\Form
     {
