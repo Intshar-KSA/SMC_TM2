@@ -26,8 +26,6 @@ class ManageTranslations extends Page implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-o-language';
     protected static string $view = 'filament.pages.manage-translations';
-    protected static ?string $navigationLabel = 'Manage Translations';
-    protected static ?string $navigationGroup = 'Settings';
 
     public $translations = [];
     public $locales = [];
@@ -161,9 +159,10 @@ protected function getFormattedTranslations(): array
     }
     public function getTitle(): string | Htmlable
     {
-        return __(static::$title ?? (string) str(class_basename(static::class))
-        ->kebab()
-        ->replace('-', ' ')
-        ->title());
+        return __('Manage Translations');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('Manage Translations');
     }
 }
