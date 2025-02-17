@@ -17,6 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\TaskFollowUpResource\Pages;
 use App\Filament\App\Resources\TaskFollowUpResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 
 class TaskFollowUpResource extends Resource
 {
@@ -28,7 +29,7 @@ class TaskFollowUpResource extends Resource
     public static function form(Form $form): Form
     {
         $userId = auth()->guard('emp')->user()->user_id;
-    
+
         return $form
             ->schema([
                 Forms\Components\Select::make('task_id')
@@ -40,7 +41,7 @@ class TaskFollowUpResource extends Resource
                     })
                     ->required()
                     ->searchable(),
-    
+
                 Forms\Components\Select::make('task_status_id')
                     ->relationship('taskStatusForUser', 'name')
                     ->required()
@@ -49,10 +50,10 @@ class TaskFollowUpResource extends Resource
                         $taskStatus = TaskStatus::find($state);
                         $set('is_completed', $taskStatus && $taskStatus->is_completely); // تعيين إذا كانت الحالة مكتملة
                     }),
-    
+
                 Forms\Components\Textarea::make('note')
                     ->columnSpanFull(),
-    
+
                 Forms\Components\TextInput::make('exact_time')
                     ->label('Exact Time (minutes)')
                     ->numeric()
@@ -63,9 +64,9 @@ class TaskFollowUpResource extends Resource
             ])
             ->statePath('data'); // للتأكد من عدم تأثير الحالة المؤقتة على البيانات
     }
-    
-    
-    
+
+
+
 
     public static function table(Table $table): Table
     {
@@ -172,5 +173,14 @@ class TaskFollowUpResource extends Resource
                 $query->where('user_id', $userId);
             });
         });
+    }
+    public static function getModelLabel(): string
+    {
+        return ModelLabelHelper::getModelLabel(static::$model);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 }

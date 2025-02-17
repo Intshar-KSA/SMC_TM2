@@ -31,6 +31,7 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\App\Resources\TaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\TaskResource\RelationManagers\TaskFollowUpsRelationManager;
+use App\Helpers\ModelLabelHelper;
 
 class TaskResource extends Resource
 {
@@ -292,27 +293,16 @@ class TaskResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // $userId = auth()->guard('emp')->user()->user_id;
+        return parent::getEloquentQuery();
+    }
 
-        // $currentEmp = auth()->guard('emp')->user();
-        // if ($currentEmp && !$currentEmp->can_show) {
-        //     // إذا كانت can_show هي false، عرض المهام الخاصة فقط بالموظف
-        //     $userId2 = auth()->id();
+    public static function getModelLabel(): string
+    {
+        return ModelLabelHelper::getModelLabel(static::$model);
+    }
 
-        //     return parent::getEloquentQuery()->where(function($q) use ($userId2) {
-        //         $q->where('receiver_id', $userId2);
-        //         //   ->orWhere('receiver_id', $userId);
-        //     });
-
-        //     // return parent::getEloquentQuery()
-        //     //     ->where('receiver_id', $currentEmp->id);
-        // }
-
-        // return parent::getEloquentQuery()
-        //     ->whereHas('user_project_app', function (Builder $query) use ($userId) {
-        //         $query->where('user_id', $userId);
-        //     })
-        return parent::getEloquentQuery()
-            ;
+    public static function getPluralModelLabel(): string
+    {
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 }

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use App\Filament\App\Resources\ProjectPlanDetailResource\Pages;
+use App\Helpers\ModelLabelHelper;
 use App\Services\WhatsAppService;
 
 class ProjectPlanDetailResource extends Resource
@@ -94,5 +95,14 @@ class ProjectPlanDetailResource extends Resource
         'edit' => Pages\EditProjectPlanDetail::route('/{record}/edit'),
         // 'view' => Pages\ViewProjectPlan::route('/{record}'),
     ];
+}
+public static function getModelLabel(): string
+{
+    return ModelLabelHelper::getModelLabel(static::$model);
+}
+
+public static function getPluralModelLabel(): string
+{
+    return ModelLabelHelper::getPluralModelLabel(static::$model);
 }
 }

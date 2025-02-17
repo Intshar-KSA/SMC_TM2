@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\ProjectResource\Pages;
 use App\Filament\App\Resources\ProjectResource\RelationManagers;
+use App\Helpers\ModelLabelHelper;
 
 class ProjectResource extends Resource
 {
@@ -166,7 +167,17 @@ class ProjectResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-       
+
         return parent::getEloquentQuery();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return ModelLabelHelper::getModelLabel(static::$model);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 }

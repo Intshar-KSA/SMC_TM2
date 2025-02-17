@@ -28,7 +28,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 
 use App\Filament\App\Resources\TaskFollowUpResource\RelationManagers;
-
+use App\Helpers\ModelLabelHelper;
 
 class ProjectAttachmentResource extends Resource
 {
@@ -151,6 +151,16 @@ class ProjectAttachmentResource extends Resource
             ->whereHas('attach_project', function (Builder $query) use ($userId) {
                 $query->where('user_id', $userId);
             });
+    }
+
+    public static function getModelLabel(): string
+    {
+        return ModelLabelHelper::getModelLabel(static::$model);
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return ModelLabelHelper::getPluralModelLabel(static::$model);
     }
 
 

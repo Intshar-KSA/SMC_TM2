@@ -146,13 +146,12 @@ protected function getFormattedTranslations(): array
         $guard = Auth::getDefaultDriver();
 
 
-        // if ($guard === 'web') {
-        //     if( $user?->isSuperAdmin()??false) {
-        //         return true;
-        //     }
+        if ($guard === 'web') {
+            if( $user?->isSuperAdmin()??false) {
+                return true;
+            }
 
-        //     }
-        // return false;
-        return true;
+            }
+        return false;
     }
 }

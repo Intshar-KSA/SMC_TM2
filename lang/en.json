@@ -96,7 +96,7 @@
     "Insta user": "Instagram user",
     "Only for admin*": "Only for the official*",
     "Insta pass": "Instagram password",
-    "Employee task summary": "Employee task summary",
+    "Employee task summary": "Employee Task Summary",
     "wwe": "wwe",
     "go": "يذهب",
     "leave": "يترك",
@@ -116,5 +116,14 @@
     "ar": "Arabic",
     "Edit": "Edit",
     "Cancel": "Cancel",
-    "Save": "Save"
+    "Save": "Save",
+    "Project attachments": "Project Attachments",
+    "Project attachment": "Project Attachment",
+    "Filter": "Filter",
+    "Total hours": "Total Hours",
+    "Exact minutes": "Exact minutes",
+    "Exact hours": "Exact hours",
+    "Difference": "Difference",
+    "Hrs": "Hours",
+    "Mins": "Minutes"
 }

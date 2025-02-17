@@ -3,13 +3,13 @@ namespace App\Filament\Pages;
 
 use App\Models\Emp;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 
 class EmployeeTaskMinutes extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     protected static string $view = 'filament.pages.employee-task-minutes';
-    protected static ?string $title = 'Employee Task Summary';
     protected static ?string $navigationGroup = 'Employee Task Summary';
     public $employees;
 
@@ -70,5 +70,16 @@ class EmployeeTaskMinutes extends Page
         $plural = Str::plural($formatted); // e.g., "Task follow ups" -> "Task follow ups" (plural)
 
         return __($plural); // Translate the plural label
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Employee task summary');
+    }
+
+
+    public function getTitle(): string | Htmlable
+    {
+        return '';
     }
 }

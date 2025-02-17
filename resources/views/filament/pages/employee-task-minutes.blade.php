@@ -8,7 +8,7 @@
 
             <!-- زر الفلترة -->
             <button type="submit" class="bg-blue-600 text-black p-2 rounded-md hover:bg-blue-700 transition duration-200 dark:bg-yellow-400 dark:text-black dark:hover:bg-yellow-500">
-                Filter
+                {{ __('Filter') }}
             </button>
         </form>
     </div>
@@ -19,26 +19,26 @@
                 <tr>
                     <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Employee name') }}</th>
                     <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Total minutes') }}</th>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Total Hours</th>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Exact Time (mins)</th>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Exact Time (hrs)</th>
-                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">Difference (hrs)</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Total hours') }}</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Exact minutes') }}</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Exact hours') }}</th>
+                    <th class="py-4 px-6 text-left text-sm uppercase font-semibold tracking-wider">{{ __('Difference') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach ($this->employees as $employee)
                     <tr class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition ease-in-out duration-200">
                         <td class="py-4 px-6 text-gray-900 dark:text-gray-100 font-medium">{{ $employee->name }}</td>
-                        <td class="py-4 px-6 text-gray-700 dark:text-gray-400">{{ $employee->sent_tasks_sum_time_in_minutes ?? 0 }} mins</td>
+                        <td class="py-4 px-6 text-gray-700 dark:text-gray-400">{{ $employee->sent_tasks_sum_time_in_minutes ?? 0 }} {{ __('Mins') }}</td>
                         <td class="py-4 px-6 text-gray-700 dark:text-gray-400">
-                            {{ number_format(($employee->sent_tasks_sum_time_in_minutes ?? 0) / 60, 2) }} hrs
+                            {{ number_format(($employee->sent_tasks_sum_time_in_minutes ?? 0) / 60, 2) }} {{ __('Hrs') }}
                         </td>
-                        <td class="py-4 px-6 text-gray-700 dark:text-gray-400">{{ $employee->sent_tasks_sum_exact_time ?? 0 }} mins</td>
+                        <td class="py-4 px-6 text-gray-700 dark:text-gray-400">{{ $employee->sent_tasks_sum_exact_time ?? 0 }} {{ __('Mins') }}</td>
                         <td class="py-4 px-6 text-gray-700 dark:text-gray-400">
-                            {{ number_format(($employee->sent_tasks_sum_exact_time ?? 0) / 60, 2) }} hrs
+                            {{ number_format(($employee->sent_tasks_sum_exact_time ?? 0) / 60, 2) }} {{ __('Hrs') }}
                         </td>
                         <td class="py-4 px-6 text-gray-700 dark:text-gray-400">
-                            {{ number_format((($employee->sent_tasks_sum_time_in_minutes ?? 0) - ($employee->sent_tasks_sum_exact_time ?? 0)) / 60, 2) }} hrs
+                            {{ number_format((($employee->sent_tasks_sum_time_in_minutes ?? 0) - ($employee->sent_tasks_sum_exact_time ?? 0)) / 60, 2) }} {{ __('Hrs') }}
                         </td>
                     </tr>
                 @endforeach

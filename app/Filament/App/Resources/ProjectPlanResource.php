@@ -14,8 +14,7 @@ use Filament\Tables\Columns\BooleanColumn;
 // use RelationManagers\ProjectPlanDetailsRelationManager;
 use App\Filament\App\Resources\ProjectPlanResource\Pages;
 use App\Filament\App\Resources\ProjectPlanResource\RelationManagers;
-
-
+use App\Helpers\ModelLabelHelper;
 
 class ProjectPlanResource extends Resource
 {
@@ -47,7 +46,7 @@ class ProjectPlanResource extends Resource
                 DatePicker::make('end_date')
                     ->required()
                     ->label('End Date'),
-                
+
 
                     // Forms\Components\Select::make('receiver_id')
                     // ->relationship('task_emp_app', 'name')
@@ -110,7 +109,7 @@ class ProjectPlanResource extends Resource
                 TextColumn::make('programmer.name')->label('Programmer')->sortable()->searchable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('seoSpecialist.name')->label('SEO Specialist')->sortable()->searchable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('files_url')->label('Files URL')->sortable()->toggleable(isToggledHiddenByDefault: true),
-           
+
             ])
             ->filters([
                 // Add any filters if needed
@@ -140,6 +139,16 @@ public static function getPages(): array
         'edit' => Pages\EditProjectPlan::route('/{record}/edit'),
         // 'view' => Pages\ViewProjectPlan::route('/{record}'),
     ];
+}
+
+public static function getModelLabel(): string
+{
+    return ModelLabelHelper::getModelLabel(static::$model);
+}
+
+public static function getPluralModelLabel(): string
+{
+    return ModelLabelHelper::getPluralModelLabel(static::$model);
 }
 
 }

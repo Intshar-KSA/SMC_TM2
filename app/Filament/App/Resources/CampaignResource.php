@@ -12,7 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\DateColumn;
 use App\Filament\App\Resources\CampaignResource\Pages;
-
+use App\Helpers\ModelLabelHelper;
 
 class CampaignResource extends Resource
 {
@@ -54,7 +54,7 @@ class CampaignResource extends Resource
                         'twitter' => 'Twitter',
                         'linkedin' => 'Linkedin',
                         'other' => 'Other',
-                    
+
                         // Add more platforms as needed
                     ])
                     // ->required()
@@ -92,7 +92,7 @@ class CampaignResource extends Resource
                 DatePicker::make('end_date')
                     ->label('End Date')
                     ->required(),
-                             
+
             // إضافة مفتاح Toggle يظهر عند التعديل فقط
             Forms\Components\Toggle::make('send_to_group')
             ->label('إرسال إلى جروب العميل')
@@ -115,7 +115,7 @@ class CampaignResource extends Resource
                 TextColumn::make('area')->label('Area')->sortable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('location_url')->label('Location URL')->sortable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('creatives_url')->label('Creatives URL')->sortable()->toggleable(isToggledHiddenByDefault: true),
-                
+
                 Tables\Columns\TextColumn::make('start_date')
                 ->label('Start Date')
                 ->dateTime()
@@ -145,5 +145,15 @@ class CampaignResource extends Resource
         'edit' => Pages\EditCampaign::route('/{record}/edit'),
         // 'view' => Pages\ViewProjectPlan::route('/{record}'),
     ];
+}
+
+public static function getModelLabel(): string
+{
+    return ModelLabelHelper::getModelLabel(static::$model);
+}
+
+public static function getPluralModelLabel(): string
+{
+    return ModelLabelHelper::getPluralModelLabel(static::$model);
 }
 }
