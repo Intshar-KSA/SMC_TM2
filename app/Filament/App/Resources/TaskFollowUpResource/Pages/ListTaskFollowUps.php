@@ -54,4 +54,9 @@ class ListTaskFollowUps extends ListRecords
             }),
         ];
     }
+
+    protected function getTableQuery(): ?\Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getTableQuery()->latest();
+    }
 }

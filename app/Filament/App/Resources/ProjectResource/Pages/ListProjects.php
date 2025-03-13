@@ -20,4 +20,8 @@ class ListProjects extends ListRecords
 
         return $list;
     }
+    protected function getTableQuery(): ?\Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getTableQuery()->latest();
+    }
 }

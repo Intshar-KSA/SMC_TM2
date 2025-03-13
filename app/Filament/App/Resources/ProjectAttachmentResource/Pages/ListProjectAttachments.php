@@ -26,4 +26,8 @@ class ListProjectAttachments extends ListRecords
                 $query->where('user_id', $userId);
             });
     }
+    protected function getTableQuery(): ?\Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getTableQuery()->latest();
+    }
 }
