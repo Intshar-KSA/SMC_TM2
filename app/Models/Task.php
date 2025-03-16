@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Models\Emp;
 use App\Models\Scopes\TasksScope;
-use App\Models\User;
 use App\Observers\TaskObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy([TaskObserver::class])]
 #[ScopedBy([TasksScope::class])]
@@ -23,7 +21,7 @@ class Task extends Model
         'is_recurring',
         'recurrence_interval_days',
         'next_occurrence',
-        'parent_id','exact_time'
+        'parent_id', 'exact_time',
     ];
 
     // Define relationships
@@ -33,34 +31,38 @@ class Task extends Model
     }
 
     public function user_project()
-{
-    return $this->belongsTo(Project::class,'project_id')->where('user_id', auth()->id());
-}
-public function user_project_app()
-{
-    return $this->belongsTo(Project::class, 'project_id');
-}
+    {
+        return $this->belongsTo(Project::class, 'project_id')->where('user_id', auth()->id());
+    }
 
-public function emp_project()
-{
+    public function user_project_app()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 
-    $user=User::find(auth()->user()->user_id);
-    return $this->belongsTo(Project::class,'project_id')->where('user_id', $user->id);
-}
-public function emp_project2()
-{
-    return $this->belongsTo(Project::class, 'project_id');
-}
+    public function emp_project()
+    {
 
-public function task_emp()
-{
-    return $this->belongsTo(Emp::class,'sender_id')->where('user_id', auth()->id());
-}
+        $user = User::find(auth()->user()->user_id);
 
-public function task_emp_app()
-{
-    return $this->belongsTo(Emp::class,'sender_id')->where('user_id', auth()->user()->user_id);
-}
+        return $this->belongsTo(Project::class, 'project_id')->where('user_id', $user->id);
+    }
+
+    public function emp_project2()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function task_emp()
+    {
+        return $this->belongsTo(Emp::class, 'sender_id')->where('user_id', auth()->id());
+    }
+
+    public function task_emp_app()
+    {
+        return $this->belongsTo(Emp::class, 'sender_id')->where('user_id', auth()->user()->user_id);
+    }
+
     public function sender()
     {
         return $this->belongsTo(Emp::class, 'sender_id');
@@ -90,41 +92,42 @@ public function task_emp_app()
     {
         return $this->hasOneThrough(User::class, Project::class, 'id', 'id', 'project_id', 'user_id');
     }
+
     public function taskFollowUps()
     {
         return $this->hasMany(TaskFollowUp::class);
     }
-     // Define parent task relationship
-     public function parentTask()
-     {
-         return $this->belongsTo(Task::class, 'parent_id');
-     }
 
-     // Define child tasks relationship
-     public function childTasks()
-     {
-         return $this->hasMany(Task::class, 'parent_id');
-     }
+    // Define parent task relationship
+    public function parentTask()
+    {
+        return $this->belongsTo(Task::class, 'parent_id');
+    }
 
- // Function to handle recurring tasks
- public static function handleRecurringTasks()
- {
-     $now = Carbon::now();
-     $tasks = self::where('is_recurring', true)
-         ->where('next_occurrence', '<=', $now)
-         ->get();
+    // Define child tasks relationship
+    public function childTasks()
+    {
+        return $this->hasMany(Task::class, 'parent_id');
+    }
 
-     foreach ($tasks as $task) {
-         // Create a new task
-         $newTask = $task->replicate();
-         $newTask->start_date = $task->next_occurrence;
-         $newTask->next_occurrence = Carbon::parse($task->next_occurrence)->addDays($task->recurrence_interval_days);
-         $newTask->save();
+    // Function to handle recurring tasks
+    public static function handleRecurringTasks()
+    {
+        $now = Carbon::now();
+        $tasks = self::where('is_recurring', true)
+            ->where('next_occurrence', '<=', $now)
+            ->get();
 
-         // Update the next_occurrence of the original task
-         $task->next_occurrence = $newTask->next_occurrence;
-         $task->save();
-     }
- }
+        foreach ($tasks as $task) {
+            // Create a new task
+            $newTask = $task->replicate();
+            $newTask->start_date = $task->next_occurrence;
+            $newTask->next_occurrence = Carbon::parse($task->next_occurrence)->addDays($task->recurrence_interval_days);
+            $newTask->save();
 
+            // Update the next_occurrence of the original task
+            $task->next_occurrence = $newTask->next_occurrence;
+            $task->save();
+        }
+    }
 }

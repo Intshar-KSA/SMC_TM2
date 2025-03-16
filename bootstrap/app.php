@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,6 +14,18 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+    })
+    ->withCommands([
+        // أضف اسم الـCommand هنا
+        \App\Console\Commands\SendDailyCompletedTasks::class,
+    ])
+    ->withSchedule(function (Schedule $schedule) {
+        // جدولة الـCommand للعمل كل ساعة
+        // $schedule->command('tasks:send-report')->dailyAt('23:59');
+        $schedule->command('reports:send')->dailyAt('08:00');
+
+        // $schedule->command('attendance:process')->hourly();
+        // $schedule->command('attendance:process')->everyMinute();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

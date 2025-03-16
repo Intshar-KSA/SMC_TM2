@@ -1,15 +1,17 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmpController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SendMassegController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskFollowUpController;
+use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmpController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TaskStatusController;
-use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\TaskFollowUpController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -54,7 +56,6 @@ Route::post('/tasks/recurring', [TaskController::class, 'createRecurringTask']);
 Route::put('/tasks/recurring/{task}', [TaskController::class, 'updateRecurringTask']);
 Route::get('/projects/{projectId}/recurring-tasks', [TaskController::class, 'recurringTasksByProject']);
 
-
 Route::get('/projects/{projectId}/tasks', [TaskController::class, 'getProjectTasks']);
 Route::get('/projects/{projectId}/tasks_with_emp', [TaskController::class, 'tasksByProjectwithEmp']);
 Route::get('/projects/{projectId}/tasks_emp_lastfollowup', [TaskController::class, 'tasksByProjectwithEmpـlastfollowup']);
@@ -90,3 +91,5 @@ Route::put('/task-statuses/{id}', [TaskStatusController::class, 'update']);
 
 // حذف حالة مهمة
 Route::delete('/task-statuses/{id}', [TaskStatusController::class, 'destroy']);
+
+Route::post('/run-task-report', [SendMassegController::class, 'generateEmployeeReport']);
