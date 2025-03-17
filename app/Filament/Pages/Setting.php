@@ -2,31 +2,45 @@
 
 namespace App\Filament\Pages;
 
-use session;
-use Filament\Pages\Page;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
-use Filament\Forms\Components\Placeholder;
+use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Setting extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
     protected static string $view = 'filament.pages.setting';
+
     protected static ?string $navigationLabel = 'Settings';
     // protected static ?string $navigationGroup = 'General Settings';
 
     public $name;
+
     public $phone;
+
     public $enable_whatsapp_notifications;
+
     public $enable_group_notifications;
+
     public $enable_employee_notifications;
+
     public $w_api_profile_id;
+
     public $w_api_token;
+
     public $work_group;
+
     public $company_policy;
+
+    // المتغيرات الجديدة لإرسال التقارير اليومية
+    public $enable_daily_project_report;
+
+    public $enable_daily_employee_report;
 
     protected function getFormSchema(): array
     {
@@ -66,9 +80,18 @@ class Setting extends Page
             Toggle::make('enable_employee_notifications')
                 ->default($user->enable_employee_notifications == 1 ? 1 : 0),
 
+            // الحقول الجديدة لتقارير المهام اليومية
+            Toggle::make('enable_daily_project_report')
+                ->default($user->enable_daily_project_report == 1 ? 1 : 0)
+                ->label('إرسال تقرير يومي حسب المشروع (الى جروب العمل)'),
+
+            Toggle::make('enable_daily_employee_report')
+                ->default($user->enable_daily_employee_report == 1 ? 1 : 0)
+                ->label('إرسال تقرير يومي حسب الموظف (الى جروب العمل)'),
+
             Placeholder::make(' ')
                 ->content(' ')
-                ->columnSpan('full')
+                ->columnSpan('full'),
         ];
     }
 
@@ -85,6 +108,10 @@ class Setting extends Page
         $this->w_api_profile_id = $user->w_api_profile_id;
         $this->work_group = $user->work_group;
         $this->company_policy = $user->company_policy;
+
+           // تحميل قيم الحقول الجديدة
+           $this->enable_daily_project_report = $user->enable_daily_project_report;
+           $this->enable_daily_employee_report = $user->enable_daily_employee_report;
     }
 
     public function saveProfile()
@@ -101,6 +128,9 @@ class Setting extends Page
             'enable_group_notifications' => ($data['enable_group_notifications']),
             'enable_employee_notifications' => ($data['enable_employee_notifications']),
             'company_policy' => $data['company_policy'],
+            'enable_daily_project_report' => $data['enable_daily_project_report'],
+            'enable_daily_employee_report' => $data['enable_daily_employee_report'],
+
         ]);
 
         Notification::make()
@@ -120,15 +150,17 @@ class Setting extends Page
     {
         return __('Settings');
     }
-     public static function getNavigationGroup(): string
+
+    public static function getNavigationGroup(): string
     {
         return __('General settings');
     }
-    public function getTitle(): string | Htmlable
+
+    public function getTitle(): string|Htmlable
     {
         return __(static::$title ?? (string) str(class_basename(static::class))
-        ->kebab()
-        ->replace('-', ' ')
-        ->title());
+            ->kebab()
+            ->replace('-', ' ')
+            ->title());
     }
 }

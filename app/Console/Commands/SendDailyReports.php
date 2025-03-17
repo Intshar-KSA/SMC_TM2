@@ -3,16 +3,15 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\SendMassegController;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 
 class SendDailyReports extends Command
 {
-    // قم بتحديد توقيع الأمر؛ يمكنك تمرير معطيات مثل user_id إذا دعت الحاجة
     protected $signature = 'reports:send';
 
-    // وصف الأمر
-    protected $description = 'إرسال تقارير المهام اليومية للمستخدم';
+    protected $description = 'إرسال تقارير المهام اليومية لجميع المستخدمين الذين لديهم التقارير المفعلة';
 
     public function __construct()
     {
@@ -21,16 +20,36 @@ class SendDailyReports extends Command
 
     public function handle()
     {
-        // يمكنك استدعاء الكنترولر مباشرة أو استدعاء خدمة في حال قمت بفصل المنطق
+        // استدعاء الكنترولر الذي يحتوي على دوال التقارير
         $controller = new SendMassegController;
 
-        // إنشاء كائن Request لتمرير معطيات مثل user_id (افترض هنا أنه يتم تمرير معرف المستخدم من خلال أمر الـ artisan)
-        $request = new Request(['user_id' => 1]);
+        // الحصول على جميع المستخدمين
+        $users = User::all();
 
-        // استدعاء الدالتين؛ يمكنك استدعاء واحدة تلو الأخرى أو دمجها في دالة واحدة
-        $controller->generate($request);
-        $controller->generateEmployeeReport($request);
+        foreach ($users as $user) {
+            // التحقق مما إذا كان أي من تقارير اليوم مفعلة للمستخدم
+            if ($user->enable_daily_project_report || $user->enable_daily_employee_report) {
+                $this->info("معالجة التقارير للمستخدم: {$user->id}");
 
-        $this->info('تم إرسال التقارير بنجاح.');
+                // إنشاء Request جديد مع user_id الخاص بالمستخدم الحالي
+                $request = new Request(['user_id' => $user->id]);
+
+                // إذا كان تقرير المشاريع مفعل
+                if ($user->enable_daily_project_report) {
+                    $controller->generate($request);
+                    $this->info("تم إرسال تقرير المشاريع للمستخدم: {$user->id}");
+                }
+
+                // إذا كان تقرير الموظفين مفعل
+                if ($user->enable_daily_employee_report) {
+                    $controller->generateEmployeeReport($request);
+                    $this->info("تم إرسال تقرير الموظفين للمستخدم: {$user->id}");
+                }
+            } else {
+                $this->info("لا توجد تقارير مفعلة للمستخدم: {$user->id}");
+            }
+        }
+
+        $this->info('تم إرسال جميع التقارير بنجاح.');
     }
 }
